@@ -80,7 +80,7 @@ export const api = {
   },
 
   deviceLink(slug: string, token: string): Promise<DeviceLink> {
-    return request(`/api/tables/${slug}/device-link`, { method: 'POST', token, body: '{}' });
+    return request(`/api/tables/${slug}/device-link`, { method: 'POST', token });
   },
 
   claim(slug: string, code: string): Promise<SeatGrant> {

@@ -14,6 +14,8 @@ import { Seat } from './Seat';
 import { ConfirmSheet, Denominations, DeviceSheet, InfoSheet, RanksSheet, RecapSheet, Rules } from './Sheets';
 import {
   arrangeSeats,
+  badgeStyle,
+  headsUpBadge,
   awaySummary,
   feedRows,
   nameOf,
@@ -528,6 +530,7 @@ export function Table({ client, frame, snapshot, layout, fromNudge, onRebuy, onL
     { k: 'Missed', v: summary ? `${summary.missed} turn${summary.missed === 1 ? '' : 's'}` : '0 turns' },
   ];
 
+  const myBadge = me ? headsUpBadge(me) : null;
   const handLabel = you?.hole ? (folded ? 'Folded' : you.handLabel) : null;
   const sheetL = g.col[0] + (g.col[1] - g.sheetW) / 2;
   const fx = g.felt;
@@ -1153,6 +1156,25 @@ export function Table({ client, frame, snapshot, layout, fromNudge, onRebuy, onL
               <Ring size={34} fraction={myTurn ? myRemaining / v.config.turnTimerMs : 1} />
             )}
             {me && <Avatar name={me.name} color={me.color} size={34} fontSize={13} />}
+            {me?.inHand && myBadge && (
+              <div
+                className="badge"
+                style={{
+                  position: 'absolute',
+                  left: -12,
+                  top: -6,
+                  height: 18,
+                  minWidth: 18,
+                  fontSize: 9,
+                  padding: '0 5px',
+                  background: badgeStyle(myBadge).bg,
+                  color: badgeStyle(myBadge).fg,
+                  boxShadow: badgeStyle(myBadge).sh,
+                }}
+              >
+                {myBadge}
+              </div>
+            )}
           </div>
           <span
             className="mono"

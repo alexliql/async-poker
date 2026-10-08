@@ -4,3 +4,5 @@ design/shots/
 dist/
 .DS_Store
 *.tmp.*
+e2e/test-results/
+e2e/report/

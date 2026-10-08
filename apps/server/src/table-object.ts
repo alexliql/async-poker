@@ -56,8 +56,10 @@ export class TableObject extends DurableObject<Env> {
           await this.afterChange(mergeChanges(ticked, change));
           return json(response, response.ok ? 200 : 409);
         }
-        case 'POST /device-link':
+        case 'POST /device-link': {
+          await readJson(request); // drain any body before answering
           return json(await this.core.deviceLink(await this.core.authenticate(token)), 201);
+        }
         case 'POST /claim': {
           const body = (await readJson(request)) as { code?: unknown } | null;
           return json(await this.core.claim(body?.code), 201);
