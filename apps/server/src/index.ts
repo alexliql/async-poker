@@ -11,6 +11,8 @@ export { TableObject } from './table-object';
 
 const createLimiter = new RateLimiter(20, 60 * 60_000);
 const joinLimiter = new RateLimiter(60, 60 * 60_000);
+/** Generous: a fast game is a few moves a minute per player. This only stops runaway scripts. */
+const commandLimiter = new RateLimiter(240, 60_000);
 
 function clientIp(request: Request): string {
   return request.headers.get('CF-Connecting-IP') ?? 'local';
@@ -51,6 +53,8 @@ async function tableApi(request: Request, env: Env, slug: string, rest: string):
   if (!target) return error(404, 'not_found', 'No such route');
   if ((rest === 'join' || rest === 'claim') && !joinLimiter.allow(clientIp(request), Date.now()))
     return error(429, 'rate_limited', 'Too many attempts, try later');
+  if (rest === 'commands' && !commandLimiter.allow(`${clientIp(request)}:${slug}`, Date.now()))
+    return error(429, 'rate_limited', 'Slow down a little');
   const url = new URL(request.url);
   const inner = new URL(`https://table${target}${url.search}`);
   return tableStub(env, slug).fetch(new Request(inner, request));
