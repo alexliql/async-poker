@@ -188,7 +188,8 @@ export function Seat({
             style={{
               fontSize: g.nameF,
               fontWeight: 800,
-              maxWidth: '100%',
+              // neighbours on narrow tables sit closer than a full seat width
+              maxWidth: g.seatW - 10,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
