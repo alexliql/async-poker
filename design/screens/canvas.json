@@ -1,0 +1,209 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Create.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Host · create table",
+      "w": 390,
+      "x": 0,
+      "y": 0
+    },
+    "Desktop.dc.html": {
+      "h": 900,
+      "radius": 12,
+      "title": "Desktop browser",
+      "w": 1440,
+      "x": 2484,
+      "y": 2508
+    },
+    "FoldCover.dc.html": {
+      "h": 972,
+      "radius": 40,
+      "title": "Galaxy Z Fold · cover screen (22.1:9)",
+      "w": 344,
+      "x": 0,
+      "y": 2508
+    },
+    "FoldOpen.dc.html": {
+      "h": 840,
+      "radius": 28,
+      "title": "Galaxy Z Fold · unfolded (20.9:18)",
+      "w": 720,
+      "x": 424,
+      "y": 2508
+    },
+    "Join.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Guest · join + free buy-in",
+      "w": 390,
+      "x": 0,
+      "y": 1264
+    },
+    "Lobby.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Host · lobby + invite",
+      "w": 390,
+      "x": 470,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Table · your turn",
+      "w": 390,
+      "x": 940,
+      "y": 0
+    },
+    "Recap.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Guest · opened from the nudge link",
+      "w": 390,
+      "x": 940,
+      "y": 1264
+    },
+    "Tablet.dc.html": {
+      "h": 820,
+      "radius": 24,
+      "title": "Tablet · landscape",
+      "w": 1180,
+      "x": 1224,
+      "y": 2508
+    },
+    "Waiting.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "radius": 44,
+      "title": "Guest · waiting for host",
+      "w": 390,
+      "x": 470,
+      "y": 1264
+    },
+    "Rebuy.dc.html": {
+      "x": 0,
+      "y": 3900,
+      "w": 390,
+      "h": 844,
+      "title": "Busted · free rebuy with a roast",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "SatOut.dc.html": {
+      "x": 470,
+      "y": 3900,
+      "w": 390,
+      "h": 844,
+      "title": "Timed out · sat out, come back",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "Ended.dc.html": {
+      "x": 940,
+      "y": 3900,
+      "w": 390,
+      "h": 844,
+      "title": "Host ended the game · standings",
+      "is_interactive": true,
+      "radius": 44
+    },
+    "OGInvite.dc.html": {
+      "x": 1410,
+      "y": 3900,
+      "w": 1200,
+      "h": 630,
+      "title": "Link preview · invite (1200×630)",
+      "radius": 0
+    },
+    "OGNudge.dc.html": {
+      "x": 2690,
+      "y": 3900,
+      "w": 1200,
+      "h": 630,
+      "title": "Link preview · your-turn nudge (1200×630)",
+      "radius": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-08T02:12:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "guestflow": {
+      "kind": "title1",
+      "maxW": 1330,
+      "text": "Guest: join from the group chat, come back later",
+      "w": 240,
+      "x": 0,
+      "y": 964
+    },
+    "hostflow": {
+      "kind": "title1",
+      "maxW": 1330,
+      "text": "Host: create, invite, deal",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "surfaces": {
+      "kind": "title1",
+      "maxW": 3924,
+      "text": "Same table, every screen: foldables, tablet, desktop",
+      "w": 240,
+      "x": 0,
+      "y": 2208
+    },
+    "edges": {
+      "x": 0,
+      "y": 3600,
+      "text": "When things go sideways, and what the group chat sees",
+      "kind": "title1",
+      "maxW": 3890
+    },
+    "flowcol": {
+      "x": 4004,
+      "y": 2508,
+      "text": "Create, Join, Lobby, Waiting and the edge-case screens are phone-first. On tablet and desktop they render as a centered 390 px column on the same background, so every surface gets the identical screen.",
+      "w": 380,
+      "fill": "gray"
+    },
+    "hostrule": {
+      "x": 3970,
+      "y": 3900,
+      "text": "Host leaves? Hosting passes to the next player in seat order automatically, and the game keeps going. Only the current host can end it; everyone gets the standings screen and a recap post in the group chat.",
+      "w": 380,
+      "fill": "gray"
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Create.dc.html",
+    "Lobby.dc.html",
+    "Join.dc.html",
+    "Waiting.dc.html",
+    "Recap.dc.html",
+    "FoldCover.dc.html",
+    "FoldOpen.dc.html",
+    "Tablet.dc.html",
+    "Desktop.dc.html",
+    "Rebuy.dc.html",
+    "SatOut.dc.html",
+    "Ended.dc.html",
+    "OGInvite.dc.html",
+    "OGNudge.dc.html"
+  ],
+  "pages": [],
+  "title": "Async Hold'em Table"
+}

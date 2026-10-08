@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Out of chips, free rebuy</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Geist+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.t-light{--bg:#E3E6EB;--fg:#15181D;--muted:#575E6C;--sd:rgba(146,155,171,.55);--sl:rgba(255,255,255,.95);--line:rgba(21,24,29,.07);--back:#2A2F38;--well:#D9DEE5}
+.t-dark{--bg:#1D2025;--fg:#ECEEF2;--muted:#9AA1AD;--sd:rgba(0,0,0,.55);--sl:rgba(255,255,255,.05);--line:rgba(255,255,255,.07);--back:#3A404B;--well:#16191D}
+.neu{background:var(--bg);box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl)}
+.neu-sm{background:var(--bg);box-shadow:3px 3px 8px var(--sd),-3px -3px 8px var(--sl)}
+.inset{background:var(--well);box-shadow:inset 4px 4px 10px var(--sd),inset -4px -4px 10px var(--sl)}
+.mono{font-family:'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.caps{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.btn{border:0;font:inherit;color:var(--fg);cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform 140ms cubic-bezier(.3,.7,.2,1),box-shadow 160ms ease,opacity 200ms ease,background-color 200ms ease}
+.btn:active{transform:scale(.97);box-shadow:inset 3px 3px 8px var(--sd),inset -3px -3px 8px var(--sl)}
+.btn:disabled{cursor:default;transform:none}
+.btn:not(.swatch):disabled{opacity:1;background:var(--well)!important;color:var(--muted);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.hit{position:relative}.hit::before{content:"";position:absolute;inset:-7px;border-radius:50%}
+.btn:focus-visible{outline:2.5px solid var(--fg);outline-offset:3px}
+.ghost{background:transparent;padding:0}
+.ghost:active{box-shadow:none}
+.accentBtn{color:#1B0F0A;box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.accentBtn:active{box-shadow:inset 3px 3px 8px rgba(0,0,0,.25)}
+.avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;color:#15181D;font-weight:800;box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.card{background:#FBFBFC;box-shadow:inset 0 1px 0 #fff,4px 6px 14px var(--sd),-2px -2px 6px var(--sl);font-variant-emoji:text}
+.mini{width:19px;height:26px;border-radius:4px;background:#FBFBFC;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;font-weight:800;font-size:11px;box-shadow:1px 2px 4px var(--sd);font-variant-emoji:text;flex:none}
+.back{background:var(--back);color:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1.5px var(--back),inset 0 0 0 2.5px rgba(255,255,255,.16),2px 2px 4px var(--sd)}
+.chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 6px;border-radius:13px;font-size:13px;font-weight:700;background:var(--bg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl);white-space:nowrap}
+.pchip{position:relative;display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--fg);flex:none;box-shadow:0 1px 2px var(--sd)}
+.pchip::after{content:'';position:absolute;inset:2px;border-radius:50%;border:1.5px dashed var(--bg)}
+.pchip.lg{width:20px;height:20px}
+.pchip.lg::after{inset:3px;border-width:2px}
+.badge{height:20px;min-width:20px;padding:0 6px;box-sizing:border-box;border-radius:10px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;background:var(--fg);color:var(--bg)}
+.tag{height:20px;padding:0 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--bg);box-shadow:2px 2px 5px var(--sd),-2px -2px 5px var(--sl);white-space:nowrap;display:flex;align-items:center}
+.tagS{height:18px;padding:0 7px;border-radius:9px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;background:var(--fg);color:var(--bg);flex:none}
+@keyframes chipIn{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes toastIn{0%{transform:translateY(-22px) scale(.96);opacity:0}100%{transform:none;opacity:1}}
+@keyframes fade{0%{opacity:0}100%{opacity:1}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.7);opacity:.55}}
+@keyframes rowIn{0%{transform:translateY(10px);opacity:0}100%{transform:none;opacity:1}}
+.chipIn{animation:chipIn 340ms cubic-bezier(.3,1.5,.5,1) both}
+.pop{animation:pop 280ms cubic-bezier(.3,1.4,.5,1) both}
+.toastIn{animation:toastIn 380ms cubic-bezier(.2,1.2,.4,1) both}
+.fade{animation:fade 220ms ease both}
+.breathe{animation:breathe 1.6s ease-in-out infinite}
+.rowIn{animation:rowIn 380ms cubic-bezier(.2,1.2,.4,1) both}
+@keyframes wobble{0%{transform:rotate(-3deg) scale(.92);opacity:0}60%{transform:rotate(1deg) scale(1.02);opacity:1}100%{transform:none;opacity:1}}
+.wobble{animation:wobble 520ms cubic-bezier(.2,1.3,.4,1) both}
+@media (prefers-reduced-motion:reduce){*{animation-duration:1ms !important;transition-duration:1ms !important}}
+</style>
+</helmet>
+<div class="{{themeCls}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; padding: 36px 24px 24px; background: var(--bg); color: var(--fg); font-family: 'Bricolage Grotesque', system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px">
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <span class="caps">Friday Night · Hand #22</span>
+    <h1 style="margin: 0; font-size: 40px; line-height: 1; font-weight: 800; letter-spacing: -0.04em">{{headline}}</h1>
+  </div>
+
+  <div class="neu" style="border-radius: 24px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div class="avatar" style="width: 32px; height: 32px; font-size: 13px; background: #C9A08C">P</div>
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 15px"><b>Priya</b> won <b>$142</b></span>
+        <span style="font-size: 12px; color: var(--muted)">Flush</span>
+      </div>
+      <div style="display: flex; gap: 3px"><sc-for list="{{priya}}" as="c" hint-placeholder-count="2"><div class="mini" style="color: {{c.color}}"><span>{{c.rank}}</span><span style="font-size: 9px; margin-top: 1px">{{c.suit}}</span></div></sc-for></div>
+    </div>
+    <div style="height: 1px; background: var(--line)"></div>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div class="avatar" style="width: 32px; height: 32px; font-size: 13px; background: #8FB3B5">K</div>
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 15px"><b>You</b> went all in</span>
+        <span style="font-size: 12px; color: var(--muted)">Two Pair</span>
+      </div>
+      <div style="display: flex; gap: 3px"><sc-for list="{{mine}}" as="c" hint-placeholder-count="2"><div class="mini" style="color: {{c.color}}"><span>{{c.rank}}</span><span style="font-size: 9px; margin-top: 1px">{{c.suit}}</span></div></sc-for></div>
+    </div>
+  </div>
+
+  <div class="inset" style="border-radius: 24px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span class="caps">Your stack</span>
+      <div style="display: flex; align-items: center; gap: 10px"><svg viewBox="0 0 22 12.4" width="28" height="15.8" aria-hidden="true" style="display: block; flex: none; overflow: visible; filter: drop-shadow(0 1px 0.8px rgba(0,0,0,.28))"><g transform="translate(0 4.4)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#375546"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(255,255,255,.85)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#4E7A64"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g><g transform="translate(0 2.2)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#7f423b"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(255,255,255,.85)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#B65F55"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g><g transform="translate(0 0.0)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#c6c3bb"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(21,24,29,.5)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#ECE8DF"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(21,24,29,.5)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g></svg><span class="mono" style="font-size: 34px; font-weight: 700; letter-spacing: -0.03em; line-height: 1">{{stackTxt}}</span></div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px">
+      <span class="caps">Buy-ins tonight</span>
+      <div style="display: flex; align-items: center; gap: 6px; height: 22px">
+        <sc-for list="{{buyins}}" as="b" hint-placeholder-count="3">
+          <sc-if value="{{b.used}}" hint-placeholder-val="{{ true }}"><svg class="chipIn" viewBox="0 0 22 8.0" width="30" height="10.9" aria-hidden="true" style="display: block; flex: none; overflow: visible; filter: drop-shadow(0 1px 0.8px rgba(0,0,0,.28))"><g transform="translate(0 0.0)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#375546"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(255,255,255,.85)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#4E7A64"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g></svg></sc-if>
+          <sc-if value="{{b.next}}" hint-placeholder-val="{{ false }}"><span class="inset" style="display: block; width: 30px; height: 8px; margin-top: 2px; border-radius: 50%; box-shadow: inset 1px 1px 3px var(--sd), inset -1px -1px 3px var(--sl)"></span></sc-if>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center">
+  <sc-if value="{{broke}}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; padding: 0 8px">
+      <span class="caps">The table has thoughts</span>
+      <span class="wobble" style="font-size: 40px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.02">“{{roast}}”</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{back}}" hint-placeholder-val="{{ false }}">
+    <div class="neu pop" style="border-radius: 24px; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 24px; font-weight: 800; letter-spacing: -0.03em">You’re back in.</span>
+      <span style="font-size: 15px; color: var(--muted)">Fresh $200. You’re dealt into hand #23.</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{out}}" hint-placeholder-val="{{ false }}">
+    <div class="neu pop" style="border-radius: 24px; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 24px; font-weight: 800; letter-spacing: -0.03em">Sitting out.</span>
+      <span style="font-size: 15px; color: var(--muted)">Your seat’s saved. The cards will be here when your pride recovers.</span>
+    </div>
+  </sc-if>
+  </div>
+
+  <sc-if value="{{broke}}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <button class="btn accentBtn" onClick="{{rebuy}}" style="height: 58px; border-radius: 20px; font-size: 17px; font-weight: 800; background: {{accent}}; display: flex; align-items: center; justify-content: center; gap: 8px">Rebuy for free <span class="mono" style="font-size: 14px; font-weight: 600; opacity: 0.75">· $200</span></button>
+      <button class="btn neu" onClick="{{sitOut}}" style="height: 52px; border-radius: 18px; font-size: 16px; font-weight: 700">Sit out for now</button>
+    </div>
+  </sc-if>
+  <sc-if value="{{back}}" hint-placeholder-val="{{ false }}">
+    <a href="Main.dc.html" class="btn accentBtn pop" style="height: 58px; flex: none; border-radius: 20px; font-size: 17px; font-weight: 800; background: {{accent}}; display: flex; align-items: center; justify-content: center">Back to the table</a>
+  </sc-if>
+  <sc-if value="{{out}}" hint-placeholder-val="{{ false }}">
+    <button class="btn accentBtn pop" onClick="{{rebuy}}" style="height: 58px; flex: none; border-radius: 20px; font-size: 17px; font-weight: 800; background: {{accent}}; display: flex; align-items: center; justify-content: center; gap: 8px">Rebuy and deal me in <span class="mono" style="font-size: 14px; font-weight: 600; opacity: 0.75">· $200</span></button>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"fourColor":{"editor":"boolean","default":false},"accent":{"editor":"color","default":"#FF5B2E","options":["#FF5B2E","#C6F432","#5AC8FA"]},"$preview":{"width":390,"height":844}}'>
+// roasts get meaner the more you rebuy (index = how many buy-ins you've already burned tonight)
+const ROASTS = ['', 'Damn, you’re poor.', 'Back already? Bold.', 'The chips miss you. Not really.', 'At this point it’s a subscription.'];
+const SUIT = { s: '♠', h: '♥', d: '♦', c: '♣' };
+const TWO = { s: '#15181D', c: '#15181D', h: '#D2343B', d: '#D2343B' };
+const FOUR = { s: '#15181D', c: '#2E7D4F', h: '#D2343B', d: '#2563A8' };
+
+class Component extends DCLogic {
+  state = { mode: 'broke', stack: 0, dStack: 0, buyins: 1 };
+  raf = null;
+
+  componentWillUnmount() { if (this.raf) cancelAnimationFrame(this.raf); }
+  componentDidUpdate() { if (!this.raf && this.state.dStack !== this.state.stack) this.raf = requestAnimationFrame(this.tick); }
+  tick = () => {
+    this.raf = null;
+    const s = this.state, n = s.dStack + (s.stack - s.dStack) * 0.16;
+    this.setState({ dStack: Math.abs(s.stack - n) < 0.5 ? s.stack : n });
+  };
+  rebuy = () => this.setState((s) => ({ mode: 'back', stack: 200, buyins: s.buyins + 1 }));
+  sitOut = () => this.setState({ mode: 'out' });
+
+  renderVals() {
+    const s = this.state, P = this.props;
+    const SC = (P.fourColor ?? false) ? FOUR : TWO;
+    const card = function (id) { return { rank: id.slice(0, -1).replace('T', '10'), suit: SUIT[id.slice(-1)], color: SC[id.slice(-1)] }; };
+    const pending = s.mode !== 'back';
+    const shown = s.buyins + (pending ? 1 : 0);
+    return {
+      themeCls: (P.dark ?? false) ? 't-dark' : 't-light',
+      accent: P.accent ?? '#FF5B2E',
+      headline: s.mode === 'back' ? 'Chips restored.' : 'You’re out of chips.',
+      priya: ['Ah', '9h'].map(card), mine: ['Ks', 'Kd'].map(card),
+      stackTxt: '$' + Math.round(s.dStack),
+      buyins: Array.from({ length: shown }, function (_, i) { return { used: i < s.buyins, next: i >= s.buyins }; }),
+      roast: ROASTS[Math.min(s.buyins, ROASTS.length - 1)],
+      broke: s.mode === 'broke', back: s.mode === 'back', out: s.mode === 'out',
+      rebuy: this.rebuy, sitOut: this.sitOut
+    };
+  }
+}
+</script>
+</body>
+</html>

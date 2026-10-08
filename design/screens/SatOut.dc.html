@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sat out after missed turns</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Geist+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.t-light{--bg:#E3E6EB;--fg:#15181D;--muted:#575E6C;--sd:rgba(146,155,171,.55);--sl:rgba(255,255,255,.95);--line:rgba(21,24,29,.07);--back:#2A2F38;--well:#D9DEE5}
+.t-dark{--bg:#1D2025;--fg:#ECEEF2;--muted:#9AA1AD;--sd:rgba(0,0,0,.55);--sl:rgba(255,255,255,.05);--line:rgba(255,255,255,.07);--back:#3A404B;--well:#16191D}
+.neu{background:var(--bg);box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl)}
+.neu-sm{background:var(--bg);box-shadow:3px 3px 8px var(--sd),-3px -3px 8px var(--sl)}
+.inset{background:var(--well);box-shadow:inset 4px 4px 10px var(--sd),inset -4px -4px 10px var(--sl)}
+.mono{font-family:'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.caps{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.btn{border:0;font:inherit;color:var(--fg);cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform 140ms cubic-bezier(.3,.7,.2,1),box-shadow 160ms ease,opacity 200ms ease,background-color 200ms ease}
+.btn:active{transform:scale(.97);box-shadow:inset 3px 3px 8px var(--sd),inset -3px -3px 8px var(--sl)}
+.btn:disabled{cursor:default;transform:none}
+.btn:not(.swatch):disabled{opacity:1;background:var(--well)!important;color:var(--muted);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.hit{position:relative}.hit::before{content:"";position:absolute;inset:-7px;border-radius:50%}
+.btn:focus-visible{outline:2.5px solid var(--fg);outline-offset:3px}
+.ghost{background:transparent;padding:0}
+.ghost:active{box-shadow:none}
+.accentBtn{color:#1B0F0A;box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.accentBtn:active{box-shadow:inset 3px 3px 8px rgba(0,0,0,.25)}
+.avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;color:#15181D;font-weight:800;box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.card{background:#FBFBFC;box-shadow:inset 0 1px 0 #fff,4px 6px 14px var(--sd),-2px -2px 6px var(--sl);font-variant-emoji:text}
+.mini{width:19px;height:26px;border-radius:4px;background:#FBFBFC;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;font-weight:800;font-size:11px;box-shadow:1px 2px 4px var(--sd);font-variant-emoji:text;flex:none}
+.back{background:var(--back);color:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1.5px var(--back),inset 0 0 0 2.5px rgba(255,255,255,.16),2px 2px 4px var(--sd)}
+.chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 6px;border-radius:13px;font-size:13px;font-weight:700;background:var(--bg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl);white-space:nowrap}
+.pchip{position:relative;display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--fg);flex:none;box-shadow:0 1px 2px var(--sd)}
+.pchip::after{content:'';position:absolute;inset:2px;border-radius:50%;border:1.5px dashed var(--bg)}
+.pchip.lg{width:20px;height:20px}
+.pchip.lg::after{inset:3px;border-width:2px}
+.badge{height:20px;min-width:20px;padding:0 6px;box-sizing:border-box;border-radius:10px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;background:var(--fg);color:var(--bg)}
+.tag{height:20px;padding:0 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--bg);box-shadow:2px 2px 5px var(--sd),-2px -2px 5px var(--sl);white-space:nowrap;display:flex;align-items:center}
+.tagS{height:18px;padding:0 7px;border-radius:9px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;background:var(--fg);color:var(--bg);flex:none}
+@keyframes chipIn{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes toastIn{0%{transform:translateY(-22px) scale(.96);opacity:0}100%{transform:none;opacity:1}}
+@keyframes fade{0%{opacity:0}100%{opacity:1}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.7);opacity:.55}}
+@keyframes rowIn{0%{transform:translateY(10px);opacity:0}100%{transform:none;opacity:1}}
+.chipIn{animation:chipIn 340ms cubic-bezier(.3,1.5,.5,1) both}
+.pop{animation:pop 280ms cubic-bezier(.3,1.4,.5,1) both}
+.toastIn{animation:toastIn 380ms cubic-bezier(.2,1.2,.4,1) both}
+.fade{animation:fade 220ms ease both}
+.breathe{animation:breathe 1.6s ease-in-out infinite}
+.rowIn{animation:rowIn 380ms cubic-bezier(.2,1.2,.4,1) both}
+@media (prefers-reduced-motion:reduce){*{animation-duration:1ms !important;transition-duration:1ms !important}}
+</style>
+</helmet>
+<div class="{{themeCls}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; padding: 36px 24px 24px; background: var(--bg); color: var(--fg); font-family: 'Bricolage Grotesque', system-ui, sans-serif; display: flex; flex-direction: column; gap: 20px">
+
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <span class="caps">Friday Night</span>
+      <span class="tag" style="gap: 6px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{dot}}"></span>{{statusTxt}}</span>
+    </div>
+    <h1 style="margin: 0; font-size: 40px; line-height: 1; font-weight: 800; letter-spacing: -0.04em">We kept your seat warm.</h1>
+    <p style="margin: 0; font-size: 15px; line-height: 1.4; color: var(--muted)">Your 12h timer ran out twice, so the table moved on without you and sat you out. Nothing’s lost.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+    <sc-for list="{{tiles}}" as="t" hint-placeholder-count="3">
+      <div class="inset" style="border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0">
+        <span class="caps" style="font-size: 10px">{{t.k}}</span>
+        <span class="mono" style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap">{{t.v}}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div class="neu" style="border-radius: 24px; padding: 16px 18px 6px; display: flex; flex-direction: column">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 6px">
+      <span class="caps">While you were out</span>
+      <span class="mono" style="font-size: 12px; color: var(--muted)">3 hands</span>
+    </div>
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="3">
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 52px; border-top: {{r.border}}">
+        <span class="mono" style="width: 34px; font-size: 13px; color: var(--muted)">{{r.hand}}</span>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 700">{{r.what}}</span>
+          <span style="font-size: 12px; color: var(--muted)">{{r.why}}</span>
+        </div>
+        <sc-if value="{{r.timer}}" hint-placeholder-val="{{ true }}"><span class="tagS">Timer</span></sc-if>
+        <span class="mono" style="width: 30px; text-align: right; font-size: 12px; color: var(--muted)">{{r.ago}}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center">
+    <sc-if value="{{back}}" hint-placeholder-val="{{ false }}">
+      <div class="neu pop" style="border-radius: 24px; padding: 18px 20px; display: flex; align-items: center; gap: 14px">
+        <div class="avatar" style="width: 44px; height: 44px; font-size: 17px; background: #8FB3B5">K</div>
+        <div style="display: flex; flex-direction: column; gap: 3px">
+          <span style="font-size: 18px; font-weight: 800; letter-spacing: -0.02em">You’re in from hand #20.</span>
+          <span style="font-size: 13px; color: var(--muted)">Theo’s dealing. We’ll nudge you when it’s your turn.</span>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{stay}}" hint-placeholder-val="{{ false }}">
+      <div class="pop" style="text-align: center; font-size: 15px; line-height: 1.4; color: var(--muted); padding: 0 12px">No rush. Blinds skip you while you’re out, and your $186 stays put.</div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{away}}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <button class="btn accentBtn" onClick="{{dealIn}}" style="height: 58px; border-radius: 20px; font-size: 17px; font-weight: 800; background: {{accent}}">I’m back · deal me in</button>
+      <button class="btn neu" disabled="{{stayDis}}" onClick="{{stayOut}}" style="height: 52px; border-radius: 18px; font-size: 16px; font-weight: 700">{{stayLabel}}</button>
+    </div>
+  </sc-if>
+  <sc-if value="{{back}}" hint-placeholder-val="{{ false }}">
+    <a href="Main.dc.html" class="btn accentBtn pop" style="height: 58px; flex: none; border-radius: 20px; font-size: 17px; font-weight: 800; background: {{accent}}; display: flex; align-items: center; justify-content: center">Watch the table</a>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"accent":{"editor":"color","default":"#FF5B2E","options":["#FF5B2E","#C6F432","#5AC8FA"]},"$preview":{"width":390,"height":844}}'>
+const ROWS = [
+  { hand: '#17', what: 'Auto-checked', why: 'Nothing to call', timer: true, ago: '1d' },
+  { hand: '#18', what: 'Auto-folded', why: 'Sam bet $8', timer: true, ago: '11h' },
+  { hand: '#19', what: 'Sat out', why: 'Blinds skipped you', timer: false, ago: '2h' }
+];
+
+class Component extends DCLogic {
+  state = { mode: 'out' };
+  dealIn = () => this.setState({ mode: 'back' });
+  stayOut = () => this.setState({ mode: 'stay' });
+
+  renderVals() {
+    const s = this.state, P = this.props;
+    const back = s.mode === 'back';
+    return {
+      themeCls: (P.dark ?? false) ? 't-dark' : 't-light',
+      accent: P.accent ?? '#FF5B2E',
+      statusTxt: back ? 'Back next hand' : 'Sitting out',
+      dot: back ? '#4E7A64' : '#B65F55',
+      tiles: [{ k: 'Stack', v: '$186' }, { k: 'Seat', v: 'Saved' }, { k: 'Next hand', v: '#20' }],
+      rows: ROWS.map(function (r, i) { return Object.assign({}, r, { border: i ? '1px solid var(--line)' : '0' }); }),
+      away: !back, back: back, stay: s.mode === 'stay',
+      stayLabel: s.mode === 'stay' ? 'Sitting this one out' : 'Stay out for now', stayDis: s.mode === 'stay',
+      dealIn: this.dealIn, stayOut: this.stayOut
+    };
+  }
+}
+</script>
+</body>
+</html>

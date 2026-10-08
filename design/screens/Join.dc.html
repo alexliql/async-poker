@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Join table</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Geist+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}a:hover{color:inherit}
+.t-light{--bg:#E3E6EB;--fg:#15181D;--muted:#575E6C;--sd:rgba(146,155,171,.55);--sl:rgba(255,255,255,.95);--line:rgba(21,24,29,.06)}
+.t-dark{--bg:#1D2025;--fg:#ECEEF2;--muted:#9AA1AD;--sd:rgba(0,0,0,.55);--sl:rgba(255,255,255,.05);--line:rgba(255,255,255,.05)}
+.neu{background:var(--bg);box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl)}
+.neu-sm{background:var(--bg);box-shadow:3px 3px 8px var(--sd),-3px -3px 8px var(--sl)}
+.t-light{--well:#D9DEE5}.t-dark{--well:#16191D}
+.inset{background:var(--well);box-shadow:inset 4px 4px 10px var(--sd),inset -4px -4px 10px var(--sl)}
+.mono{font-family:'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.caps{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.btn{border:0;font:inherit;color:var(--fg);cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform 140ms cubic-bezier(.3,.7,.2,1),box-shadow 140ms ease,opacity 200ms ease}
+.btn:focus-visible{outline:2.5px solid var(--fg);outline-offset:3px}
+.btn:active{transform:scale(.97);box-shadow:inset 3px 3px 8px var(--sd),inset -3px -3px 8px var(--sl)}
+.btn:disabled{cursor:default;transform:none}
+.btn:not(.swatch):disabled{opacity:1;background:var(--well)!important;color:var(--muted);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.hit{position:relative}.hit::before{content:"";position:absolute;inset:-7px;border-radius:50%}
+.accentBtn{color:#1B0F0A;box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.accentBtn:active{box-shadow:inset 3px 3px 8px rgba(0,0,0,.25)}
+.field{border:0;outline:0;font:inherit;color:var(--fg);width:100%;box-sizing:border-box}
+.field::placeholder{color:var(--muted);opacity:1}
+.field:focus{box-shadow:inset 4px 4px 10px var(--sd),inset -4px -4px 10px var(--sl),0 0 0 2px var(--fg)}
+.avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;color:#15181D;box-shadow:3px 3px 8px var(--sd),-3px -3px 8px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.swatch{width:32px;height:32px;padding:0;border-radius:50%;box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.swatch.sel{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--fg)}
+.swatch:disabled{opacity:.5;box-shadow:inset 2px 2px 5px rgba(0,0,0,.25)}
+.swatch:disabled::after{content:"";position:absolute;left:50%;top:4px;bottom:4px;width:3px;margin-left:-1.5px;border-radius:2px;background:var(--fg);transform:rotate(45deg)}
+.t-light{--back:#2A2F38}.t-dark{--back:#3A404B}
+.cback{position:relative;border-radius:7px;background:var(--back);color:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;box-shadow:4px 6px 12px var(--sd),-2px -2px 6px var(--sl)}
+.cframe{position:absolute;inset:4px;border-radius:4px;border:1px solid rgba(255,255,255,.18)}
+@keyframes dealIn{0%{transform:translateY(-28px) scale(.85);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+.dealIn{animation:dealIn 520ms cubic-bezier(.2,1.3,.35,1) both}
+@keyframes pop{0%{transform:translateY(10px) scale(.94);opacity:0}100%{transform:none;opacity:1}}
+@keyframes wobble{0%{transform:rotate(0)}30%{transform:rotate(-2.5deg)}60%{transform:rotate(1.5deg)}100%{transform:rotate(0)}}
+.pop{animation:pop 380ms cubic-bezier(.2,1.3,.4,1) both}
+.wobble{animation:wobble 420ms cubic-bezier(.3,1.4,.5,1) 160ms both}
+@media (prefers-reduced-motion:reduce){*{animation-duration:1ms !important;transition-duration:1ms !important}}
+</style>
+</helmet>
+<div class="{{themeCls}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; padding: 28px 24px 26px; background: var(--bg); color: var(--fg); font-family: 'Bricolage Grotesque', system-ui, sans-serif; display: flex; flex-direction: column; gap: 18px">
+
+  <div aria-hidden="true" style="align-self: center; position: relative; width: 70px; height: 58px; flex: none">
+    <div style="position: absolute; left: 2px; top: 6px; transform: rotate(-11deg)">
+      <div class="cback dealIn" style="width: 36px; height: 50px; animation-delay: 120ms">
+        <div class="cframe"></div>
+        <svg width="20" height="20" viewBox="0.8 1.75 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="16" r="4.5"></circle><path d="M9 11.5V8.5"></path><path d="M6.5 8.5a2.5 2.5 0 0 1 5 0z"></path><path d="M11.2 7.4l7.3 5.1"></path><path d="M18.5 12.5v1.4"></path><circle cx="18.5" cy="16.5" r="2.6"></circle><path d="M5 21.5h8"></path></svg>
+      </div>
+    </div>
+    <div style="position: absolute; left: 32px; top: 0; transform: rotate(9deg)">
+      <div class="cback dealIn" style="width: 36px; height: 50px; animation-delay: 240ms">
+        <div class="cframe"></div>
+        <svg width="20" height="20" viewBox="0.8 1.75 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="16" r="4.5"></circle><path d="M9 11.5V8.5"></path><path d="M6.5 8.5a2.5 2.5 0 0 1 5 0z"></path><path d="M11.2 7.4l7.3 5.1"></path><path d="M18.5 12.5v1.4"></path><circle cx="18.5" cy="16.5" r="2.6"></circle><path d="M5 21.5h8"></path></svg>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <span class="caps">You’re invited</span>
+    <h1 style="margin: 0; font-size: 46px; line-height: 0.98; font-weight: 800; letter-spacing: -0.04em">Friday Night<br>Hold’em</h1>
+    <div class="mono" style="font-size: 13px; color: var(--muted)">Hosted by Mia · Blinds $1/$2 · 12h turns</div>
+  </div>
+
+  <div class="neu" style="border-radius: 24px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <span class="caps">At the table</span>
+      <span class="mono" style="font-size: 12px; color: var(--muted)">{{seatCount}} of 8</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px">
+      <sc-for list="{{players}}" as="p" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; min-width: 0">
+          <div class="avatar" style="width: 32px; height: 32px; font-size: 13px; font-weight: 700; background: {{p.hex}}">{{p.ini}}</div>
+          <span style="max-width: 100%; font-size: 11px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{p.name}}</span>
+        </div>
+      </sc-for>
+      <sc-if value="{{hasName}}" hint-placeholder-val="{{ false }}">
+        <div class="pop" style="display: flex; flex-direction: column; align-items: center; gap: 7px; min-width: 0">
+          <div class="avatar" style="width: 32px; height: 32px; font-size: 13px; font-weight: 700; background: {{yourHex}}; transition: background 260ms ease">{{yourIni}}</div>
+          <span style="max-width: 100%; font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{yourName}}</span>
+        </div>
+      </sc-if>
+      <sc-for list="{{empties}}" as="e" hint-placeholder-count="3">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; min-width: 0">
+          <div class="inset" style="width: 32px; height: 32px; border-radius: 50%"></div>
+          <span style="font-size: 11px; color: var(--muted)">Open</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <label for="your-name" class="caps">Your name</label>
+    <div style="position: relative">
+      <input id="your-name" class="field inset" type="text" maxlength="16" autocomplete="nickname" placeholder="What should the table call you?" value="{{name}}" onChange="{{onName}}" style="height: 54px; padding: 0 60px 0 18px; border-radius: 18px; font-size: 16px">
+      <button class="btn swatch" aria-label="Choose your color" aria-expanded="{{pickOpen}}" onClick="{{togglePick}}" style="position: absolute; right: 11px; top: 11px; background: {{yourHex}}; transition: background 260ms ease, transform 140ms ease"></button>
+    </div>
+    <sc-if value="{{pickOpen}}" hint-placeholder-val="{{ false }}">
+      <div class="pop" style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); justify-items: center; gap: 4px; padding: 8px 0 2px">
+        <sc-for list="{{palette}}" as="c" hint-placeholder-count="8">
+          <button class="{{c.cls}}" disabled="{{c.taken}}" aria-label="{{c.label}}" onClick="{{c.pick}}" style="background: {{c.hex}}"></button>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <label for="catchphrase" class="caps">Catchphrase</label>
+    <input id="catchphrase" class="field inset" type="text" maxlength="40" placeholder="Read ’em and weep." value="{{phrase}}" onChange="{{onPhrase}}" style="height: 54px; padding: 0 18px; border-radius: 18px; font-size: 16px">
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center">
+    <sc-if value="{{quipA}}" hint-placeholder-val="{{ false }}">
+      <div class="neu pop" style="border-radius: 24px; padding: 22px 20px; display: flex; flex-direction: column; gap: 8px">
+        <div class="wobble" style="font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15">“{{quip}}”</div>
+        <div class="mono" style="font-size: 12px; color: var(--muted)">+$200 in free chips</div>
+      </div>
+    </sc-if>
+    <sc-if value="{{quipB}}" hint-placeholder-val="{{ false }}">
+      <div class="neu pop" style="border-radius: 24px; padding: 22px 20px; display: flex; flex-direction: column; gap: 8px">
+        <div class="wobble" style="font-size: 26px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15">“{{quip}}”</div>
+        <div class="mono" style="font-size: 12px; color: var(--muted)">+$200 in free chips</div>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{notBought}}" hint-placeholder-val="{{ true }}">
+    <button class="btn accentBtn" disabled="{{noName}}" onClick="{{buy}}" style="height: 58px; flex: none; border-radius: 20px; font-size: 17px; font-weight: 800; background: {{accent}}; display: flex; align-items: center; justify-content: center; gap: 8px">Buy in for free <span class="mono" style="font-size: 13px; font-weight: 600; opacity: .7">· $200</span></button>
+  </sc-if>
+  <sc-if value="{{bought}}" hint-placeholder-val="{{ false }}">
+    <a href="Waiting.dc.html" class="btn accentBtn pop" style="height: 58px; flex: none; border-radius: 20px; font-size: 17px; font-weight: 800; background: {{accent}}; display: flex; align-items: center; justify-content: center; gap: 10px">Take your seat
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+    </a>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"accent":{"editor":"color","default":"#FF5B2E","options":["#FF5B2E","#C6F432","#5AC8FA"]},"$preview":{"width":390,"height":844}}'>
+const QUIPS = [
+  ['Be safe, buddy.', 'Damn, you’re poor.', 'Free chips. Try not to cry.', 'The house believes in you. Barely.', 'Bold of you to show up.'],
+  ['Back already?', 'Rebuy number two. Interesting strategy.', 'We’re not mad, just disappointed.', 'Those chips had a family.'],
+  ['We’ve alerted your family.', 'At this point it’s a lifestyle.', 'Have you considered checking?', 'The chips are filing a restraining order.']
+];
+
+const PALETTE = [
+  { id: 'sage', label: 'Sage', hex: '#9DB8A0' },
+  { id: 'dusk', label: 'Dusty blue', hex: '#93AAC7' },
+  { id: 'clay', label: 'Clay', hex: '#C9A08C' },
+  { id: 'mauve', label: 'Mauve', hex: '#B59BB8' },
+  { id: 'sand', label: 'Sand', hex: '#CDB98A' },
+  { id: 'teal', label: 'Sea glass', hex: '#8FB3B5' },
+  { id: 'rose', label: 'Rose', hex: '#C79A9E' },
+  { id: 'iris', label: 'Iris', hex: '#A6A3C9' }
+];
+const SEATED = [
+  { ini: 'M', name: 'Mia', color: 'sage' },
+  { ini: 'J', name: 'Jay', color: 'dusk' },
+  { ini: 'P', name: 'Priya', color: 'clay' },
+  { ini: 'S', name: 'Sam', color: 'mauve' },
+  { ini: 'T', name: 'Theo', color: 'sand' }
+];
+function hexOf(id) { return PALETTE.find(function (c) { return c.id === id; }).hex; }
+
+class Component extends DCLogic {
+  state = { name: '', phrase: '', n: 0, quip: '', qv: 0, color: 'teal', pickOpen: false };
+
+  onName = (e) => this.setState({ name: e.target.value });
+  onPhrase = (e) => this.setState({ phrase: e.target.value });
+  togglePick = () => this.setState((s) => ({ pickOpen: !s.pickOpen }));
+  buy = () => {
+    const s = this.state;
+    if (!s.name.trim() || s.n > 0) return;
+    const pool = QUIPS[Math.min(s.n, 2)];
+    let q = s.quip;
+    while (q === s.quip) q = pool[Math.floor(Math.random() * pool.length)];
+    this.setState({ n: s.n + 1, quip: q, qv: s.qv + 1 });
+  };
+
+  renderVals() {
+    const s = this.state, P = this.props;
+    const name = s.name.trim();
+    const hasName = !!name;
+    return {
+      themeCls: (P.dark ?? false) ? 't-dark' : 't-light',
+      accent: P.accent ?? '#FF5B2E',
+      name: s.name, onName: this.onName, buy: this.buy, phrase: s.phrase, onPhrase: this.onPhrase,
+      hasName: hasName, noName: !hasName, yourIni: hasName ? name[0].toUpperCase() : '', yourName: name,
+      yourHex: hexOf(s.color), pickOpen: s.pickOpen, togglePick: this.togglePick,
+      players: SEATED.map(function (p) { return { ini: p.ini, name: p.name, hex: hexOf(p.color) }; }),
+      palette: PALETTE.map((c) => {
+        const owner = SEATED.find(function (p) { return p.color === c.id; });
+        return {
+          hex: c.hex, taken: !!owner,
+          label: owner ? c.label + ', taken by ' + owner.name : c.label,
+          cls: c.id === s.color ? 'btn swatch hit sel' : 'btn swatch hit',
+          pick: () => this.setState({ color: c.id, pickOpen: false })
+        };
+      }),
+      empties: hasName ? [1, 2] : [1, 2, 3],
+      seatCount: hasName ? 6 : 5,
+      n: s.n, quip: s.quip, chipsTxt: (s.n * 200).toLocaleString('en-US'),
+      quipA: s.n > 0 && s.qv % 2 === 0, quipB: s.n > 0 && s.qv % 2 === 1,
+      bought: s.n > 0, notBought: s.n === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

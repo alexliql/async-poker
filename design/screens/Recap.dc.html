@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Table opened from the nudge link</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Geist+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.t-light{--bg:#E3E6EB;--fg:#15181D;--muted:#575E6C;--sd:rgba(146,155,171,.55);--sl:rgba(255,255,255,.95);--line:rgba(21,24,29,.07);--back:#2A2F38;--well:#D9DEE5}
+.t-dark{--bg:#1D2025;--fg:#ECEEF2;--muted:#9AA1AD;--sd:rgba(0,0,0,.55);--sl:rgba(255,255,255,.05);--line:rgba(255,255,255,.07);--back:#3A404B;--well:#16191D}
+.neu{background:var(--bg);box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl)}
+.neu-sm{background:var(--bg);box-shadow:3px 3px 8px var(--sd),-3px -3px 8px var(--sl)}
+.inset{background:var(--well);box-shadow:inset 4px 4px 10px var(--sd),inset -4px -4px 10px var(--sl)}
+.mono{font-family:'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.caps{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.btn{border:0;font:inherit;color:var(--fg);cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform 140ms cubic-bezier(.3,.7,.2,1),box-shadow 160ms ease,opacity 200ms ease,background-color 200ms ease}
+.btn:active{transform:scale(.97);box-shadow:inset 3px 3px 8px var(--sd),inset -3px -3px 8px var(--sl)}
+.btn:disabled{cursor:default;transform:none}
+.btn:not(.swatch):disabled{opacity:1;background:var(--well)!important;color:var(--muted);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.hit{position:relative}.hit::before{content:"";position:absolute;inset:-7px;border-radius:50%}
+.btn:focus-visible{outline:2.5px solid var(--fg);outline-offset:3px}
+.ghost{background:transparent;padding:0}
+.ghost:active{box-shadow:none}
+.iconBtn:active{background:var(--well);box-shadow:inset 2px 2px 5px var(--sd),inset -2px -2px 5px var(--sl)}
+.accentBtn{color:#1B0F0A;box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.accentBtn:active{box-shadow:inset 3px 3px 8px rgba(0,0,0,.25)}
+.hold{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}
+.pre{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:16px}
+.avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;color:#15181D;font-weight:800;box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.card{background:#FBFBFC;box-shadow:inset 0 1px 0 #fff,4px 6px 14px var(--sd),-2px -2px 6px var(--sl);font-variant-emoji:text}
+.mini{width:19px;height:26px;border-radius:4px;background:#FBFBFC;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;font-weight:800;font-size:11px;box-shadow:1px 2px 4px var(--sd);font-variant-emoji:text;flex:none}
+.back{background:var(--back);color:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1.5px var(--back),inset 0 0 0 2.5px rgba(255,255,255,.16),2px 2px 4px var(--sd)}
+.chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 6px;border-radius:13px;font-size:13px;font-weight:700;background:var(--bg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl);white-space:nowrap}
+.tstack{position:relative;width:20px;height:14px;flex:none;align-self:center;margin-right:1px;filter:drop-shadow(0 1px 0.8px rgba(0,0,0,.3))}
+.tchip{position:absolute;left:0;width:20px;height:7.3px}
+.twchip{flex:none;width:40px;height:14.5px;margin-top:-10.5px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.28));animation:chipDrop 360ms cubic-bezier(.3,1.5,.5,1) both}
+.pchip{position:relative;display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--fg);flex:none;box-shadow:0 1px 2px var(--sd)}
+.pchip::after{content:'';position:absolute;inset:2px;border-radius:50%;border:1.5px dashed var(--bg)}
+.pchip.lg{width:20px;height:20px}
+.pchip.lg::after{inset:3px;border-width:2px}
+.dchip{position:relative;display:block;width:30px;height:30px;border-radius:50%;box-shadow:inset 0 -2px 0 rgba(0,0,0,.18),0 2px 4px var(--sd)}
+.dchip::after{content:'';position:absolute;inset:3px;border-radius:50%;border:2.5px dashed rgba(255,255,255,.85)}
+.dchip.light::after{border-color:rgba(21,24,29,.5)}
+.badge{height:20px;min-width:20px;padding:0 6px;box-sizing:border-box;border-radius:10px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;background:var(--fg);color:var(--bg)}
+.tag{height:20px;padding:0 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--bg);box-shadow:2px 2px 5px var(--sd),-2px -2px 5px var(--sl);white-space:nowrap;display:flex;align-items:center}
+.tagS{height:18px;padding:0 7px;border-radius:9px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;background:var(--fg);color:var(--bg);flex:none}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:32px;background:transparent;margin:0}
+input[type=range]:focus-visible{outline:2.5px solid var(--fg);outline-offset:3px;border-radius:8px}
+input[type=range]::-webkit-slider-runnable-track{height:10px;border-radius:6px;background:var(--well);box-shadow:inset 3px 3px 6px var(--sd),inset -3px -3px 6px var(--sl)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;margin-top:-10px;border-radius:50%;background:var(--bg);box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl)}
+input[type=range]::-moz-range-track{height:10px;border-radius:6px;background:var(--well);box-shadow:inset 3px 3px 6px var(--sd),inset -3px -3px 6px var(--sl)}
+input[type=range]::-moz-range-thumb{width:30px;height:30px;border:0;border-radius:50%;background:var(--bg);box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl)}
+@keyframes deal{0%{transform:translateY(-44px) scale(.82) rotate(-8deg);opacity:0}55%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes flip{0%{transform:perspective(600px) rotateY(95deg) scale(.94)}100%{transform:perspective(600px) rotateY(0) scale(1)}}
+@keyframes chipIn{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes toastIn{0%{transform:translateY(-22px) scale(.96);opacity:0}100%{transform:none;opacity:1}}
+@keyframes sheetUp{0%{transform:translateY(100%)}100%{transform:none}}
+@keyframes fade{0%{opacity:0}100%{opacity:1}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.7);opacity:.55}}
+@keyframes rowIn{0%{transform:translateY(10px);opacity:0}100%{transform:none;opacity:1}}
+@keyframes chipDrop{0%{transform:translateY(-34px);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes bubble{0%{transform:translateY(14px) scale(.6) rotate(-4deg);opacity:0}12%{transform:translateY(0) scale(1.05) rotate(1deg);opacity:1}20%{transform:scale(1) rotate(0)}85%{transform:translateY(-6px);opacity:1}100%{transform:translateY(-14px);opacity:0}}
+@keyframes drain{0%{transform:scaleX(1)}100%{transform:scaleX(0)}}
+.deal{animation:deal 480ms cubic-bezier(.2,1.25,.35,1) both}
+.flip{animation:flip 440ms cubic-bezier(.2,1.2,.4,1) both}
+.chipIn{animation:chipIn 340ms cubic-bezier(.3,1.5,.5,1) both}
+.pop{animation:pop 280ms cubic-bezier(.3,1.4,.5,1) both}
+.toastIn{animation:toastIn 380ms cubic-bezier(.2,1.2,.4,1) both}
+.sheetUp{animation:sheetUp 360ms cubic-bezier(.2,.9,.25,1) both}
+.fade{animation:fade 220ms ease both}
+.breathe{animation:breathe 1.6s ease-in-out infinite}
+.rowIn{animation:rowIn 380ms cubic-bezier(.2,1.2,.4,1) both}
+.bubble{animation:bubble 3s cubic-bezier(.2,1.3,.4,1) both}
+.drain{transform-origin:left center;animation:drain 5s linear both}
+@media (prefers-reduced-motion:reduce){*{animation-duration:1ms !important;transition-duration:1ms !important}}
+</style>
+</helmet>
+<div class="{{themeCls}}" style="position: relative; width: {{W}}px; height: {{H}}px; overflow: hidden; background: var(--bg); color: var(--fg); font-family: 'Bricolage Grotesque', system-ui, sans-serif">
+
+  <div style="position: absolute; left: {{pad}}px; width: {{topW}}px; top: 16px; height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+    <div style="display: flex; align-items: center; min-width: 0">
+      <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
+        <span style="font-size: 18px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; white-space: nowrap">Friday Night</span>
+        <span class="mono" style="font-size: 11px; color: var(--muted); white-space: nowrap">Hand #{{handNo}} · $1/$2</span>
+      </div>
+    </div>
+    <div style="display: flex; gap: 2px; flex: none; margin-right: -10px">
+      <sc-if value="{{showHistoryBtn}}" hint-placeholder-val="{{ true }}">
+        <button class="btn ghost iconBtn" aria-label="While you were away" onClick="{{openRecap}}" style="width: 44px; height: 44px; border-radius: 14px; color: var(--muted); display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"></path><path d="M3.5 4.5v4h4"></path><path d="M12 7.5V12l3 2"></path></svg>
+        </button>
+      </sc-if>
+      <button class="btn ghost iconBtn" aria-label="Share table link" style="width: 44px; height: 44px; border-radius: 14px; color: var(--muted); display: flex; align-items: center; justify-content: center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="M7 8l5-5 5 5"></path><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <sc-if value="{{hasLeftRail}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: {{lrL}}px; top: {{lrT}}px; width: {{lrW}}px; height: {{lrH}}px; display: flex; flex-direction: column; gap: 16px">
+      <div class="neu" style="border-radius: 24px; padding: 14px 16px 6px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 4px">
+          <span class="caps">Players</span>
+          <span class="mono" style="font-size: 12px; color: var(--muted)">6 of 8</span>
+        </div>
+        <sc-for list="{{roster}}" as="r" hint-placeholder-count="6">
+          <div style="display: flex; align-items: center; gap: 10px; height: 46px; border-top: {{r.border}}; opacity: {{r.op}}; transition: opacity 300ms ease">
+            <div class="avatar" style="width: 30px; height: 30px; font-size: 12px; background: {{r.hex}}">{{r.ini}}</div>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px">
+              <span style="font-size: 14px; font-weight: 800">{{r.name}}</span>
+              <span style="font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.status}}</span>
+            </div>
+            <span class="mono" style="font-size: 13px; font-weight: 600">{{r.stack}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div class="neu" style="border-radius: 24px; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+        <span class="caps">Chip denominations</span>
+        <div class="inset" style="border-radius: 16px; padding: 12px 8px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{denoms}}" as="d" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+              <span class="{{d.cls}}" style="background-color: {{d.color}}"></span>
+              <span class="mono" style="font-size: 12px; font-weight: 700">{{d.label}}</span>
+            </div>
+          </sc-for>
+        </div>
+        <sc-for list="{{rules}}" as="u" hint-placeholder-count="5">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 13px">
+            <span style="font-weight: 700">{{u.k}}</span>
+            <span class="mono" style="color: var(--muted); text-align: right">{{u.v}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{hasRightRail}}" hint-placeholder-val="{{ false }}">
+    <div class="neu" style="position: absolute; left: {{rrL}}px; top: {{rrT}}px; width: {{rrW}}px; height: {{rrH}}px; border-radius: 24px; padding: 14px 16px 8px; box-sizing: border-box; display: flex; flex-direction: column">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 4px">
+        <span class="caps">Activity</span>
+        <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted)"><span class="breathe" style="width: 7px; height: 7px; border-radius: 50%; background: #8FB3B5"></span>Live</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; flex: none; padding: 8px 0 6px">
+        <sc-for list="{{awayTiles}}" as="t" hint-placeholder-count="3">
+          <div class="inset" style="border-radius: 14px; padding: 9px 10px; display: flex; flex-direction: column; gap: 3px; min-width: 0"><span class="caps" style="font-size: 10px">{{t.k}}</span><span class="mono" style="font-size: 16px; font-weight: 700; letter-spacing: -0.03em; white-space: nowrap">{{t.v}}</span></div>
+        </sc-for>
+      </div>
+      <div style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column-reverse">
+        <div>
+          <sc-for list="{{feed}}" as="r" hint-placeholder-count="10">
+            <div class="rowIn" style="animation-delay: {{r.delay}}">
+              <sc-if value="{{r.isAway}}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; gap: 8px; padding: 12px 0 4px"><span style="flex: 1; height: 1px; background: var(--line)"></span><span class="caps">While you were away</span><span style="flex: 1; height: 1px; background: var(--line)"></span></div>
+              </sc-if>
+              <sc-if value="{{r.isHand}}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0 4px"><span style="font-size: 15px; font-weight: 800">{{r.title}}</span><span class="mono" style="font-size: 11px; color: var(--muted)">{{r.note}}</span></div>
+              </sc-if>
+              <sc-if value="{{r.isAct}}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; align-items: center; gap: 10px; height: 36px">
+                  <div class="avatar" style="width: 24px; height: 24px; font-size: 10px; background: {{r.hex}}; box-shadow: none">{{r.ini}}</div>
+                  <span style="flex: 1; min-width: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"><span style="font-weight: 800">{{r.who}}</span> {{r.verb}} <span class="mono" style="font-weight: 700">{{r.amt}}</span></span>
+                  <sc-if value="{{r.hasTag}}" hint-placeholder-val="{{ false }}"><span class="tagS">{{r.tag}}</span></sc-if>
+                  <span class="mono" style="font-size: 11px; color: var(--muted)">{{r.ago}}</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{r.isBoard}}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; gap: 10px; height: 42px">
+                  <span class="caps" style="width: 46px">{{r.street}}</span>
+                  <div style="display: flex; gap: 4px"><sc-for list="{{r.cards}}" as="c" hint-placeholder-count="3"><div class="mini" style="color: {{c.color}}"><span>{{c.rank}}</span><span style="font-size: 9px; margin-top: 1px">{{c.suit}}</span></div></sc-for></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{r.isResult}}" hint-placeholder-val="{{ false }}">
+                <div class="inset" style="margin: 6px 0 4px; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px">
+                  <svg viewBox="0 0 22 12.4" width="18" height="10.1" aria-hidden="true" style="display: block; flex: none; overflow: visible; filter: drop-shadow(0 1px 0.8px rgba(0,0,0,.28))"><g transform="translate(0 4.4)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#375546"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(255,255,255,.85)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#4E7A64"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g><g transform="translate(0 2.2)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#7f423b"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(255,255,255,.85)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#B65F55"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g><g transform="translate(0 0.0)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#c6c3bb"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(21,24,29,.5)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#ECE8DF"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(21,24,29,.5)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g></svg>
+                  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-size: 14px"><span style="font-weight: 800">{{r.who}}</span> won <span class="mono" style="font-weight: 700">{{r.amt}}</span></span>
+                    <sc-if value="{{r.hasHand}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: var(--muted)">{{r.hand}}</span></sc-if>
+                  </div>
+                  <sc-if value="{{r.hasShown}}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: 3px"><sc-for list="{{r.shown}}" as="c" hint-placeholder-count="2"><div class="mini" style="color: {{c.color}}"><span>{{c.rank}}</span><span style="font-size: 9px; margin-top: 1px">{{c.suit}}</span></div></sc-for></div></sc-if>
+                </div>
+              </sc-if>
+              <sc-if value="{{r.isTurn}}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; gap: 10px; height: 40px">
+                  <span class="breathe" style="width: 9px; height: 9px; border-radius: 50%; background: {{accent}}; margin: 0 7px; flex: none"></span>
+                  <span style="font-size: 15px; font-weight: 800">You’re up</span>
+                  <span class="mono" style="font-size: 13px; color: var(--muted)">{{r.turnTxt}}</span>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div class="inset" style="position: absolute; left: {{fL}}px; top: {{fT}}px; width: {{fW}}px; height: {{fH}}px; border-radius: {{fR}}px"></div>
+  <div style="position: absolute; left: {{flL}}px; top: {{flT}}px; width: {{flW}}px; height: {{flH}}px; border-radius: {{flR}}px; border: 1px solid var(--line); box-sizing: border-box"></div>
+
+  <div style="position: absolute; left: {{colL}}px; width: {{colW}}px; top: {{boardT}}px; display: flex; justify-content: center; gap: {{cGap}}px">
+    <sc-for list="{{board}}" as="c" hint-placeholder-count="5">
+      <div class="inset" style="position: relative; width: {{c.w}}px; height: {{c.h}}px; border-radius: {{c.r}}px">
+        <sc-if value="{{c.shown}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; inset: 0; transform: translateY({{c.lift}}px); opacity: {{c.op}}; transition: transform 360ms cubic-bezier(.3,1.4,.5,1), opacity 300ms ease">
+            <div class="card deal" style="position: absolute; inset: 0; border-radius: {{c.r}}px; color: {{c.color}}; animation-delay: {{c.delay}}">
+              <div style="position: absolute; left: {{c.pad}}px; top: {{c.padT}}px; display: flex; flex-direction: column; align-items: center; line-height: 1">
+                <span style="font-size: {{c.rkF}}px; font-weight: 800; letter-spacing: -0.03em">{{c.rank}}</span>
+                <span style="font-size: {{c.stF}}px; margin-top: 2px">{{c.suit}}</span>
+              </div>
+              <span style="position: absolute; right: {{c.pad}}px; bottom: {{c.padB}}px; font-size: {{c.bgF}}px; line-height: 1">{{c.suit}}</span>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{potShown}}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; left: {{colL}}px; width: {{colW}}px; top: {{potT}}px; display: flex; flex-direction: column; align-items: center; gap: 2px; transform: {{potTr}}; opacity: {{potO}}; transition: transform 500ms cubic-bezier(.3,.7,.2,1), opacity 500ms ease; pointer-events: none">
+      <span class="caps">Pot</span>
+      <div style="display: flex; align-items: center; gap: 10px"><svg viewBox="0 0 22 12.4" width="26" height="14.7" aria-hidden="true" style="display: block; flex: none; overflow: visible; filter: drop-shadow(0 1px 0.8px rgba(0,0,0,.28))"><g transform="translate(0 4.4)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#375546"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(255,255,255,.85)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#4E7A64"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g><g transform="translate(0 2.2)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#7f423b"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(255,255,255,.85)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#B65F55"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g><g transform="translate(0 0.0)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#c6c3bb"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(21,24,29,.5)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#ECE8DF"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(21,24,29,.5)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g></svg><span class="mono" style="font-size: 30px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1">{{potTxt}}</span></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{showToCall}}" hint-placeholder-val="{{ true }}">
+    <div class="mono fade" style="position: absolute; left: {{colL}}px; width: {{colW}}px; top: {{toCallT}}px; text-align: center; font-size: 12px; color: var(--muted)">to call {{toCallTxt}}</div>
+  </sc-if>
+
+  <sc-for list="{{seats}}" as="p" hint-placeholder-count="5">
+    <div style="position: absolute; left: {{p.left}}px; top: {{p.top}}px; width: {{p.w}}px; display: flex; flex-direction: column; align-items: center; gap: {{p.gap}}px; opacity: {{p.op}}; transition: opacity 320ms ease">
+      <div style="position: relative; width: {{p.av}}px; height: {{p.av}}px">
+        <sc-if value="{{p.active}}" hint-placeholder-val="{{ false }}">
+          <svg class="fade" aria-hidden="true" width="{{p.rs}}" height="{{p.rs}}" viewBox="0 0 {{p.rs}} {{p.rs}}" style="position: absolute; left: -6px; top: -6px; transform: rotate(-90deg)">
+            <circle cx="{{p.rc}}" cy="{{p.rc}}" r="{{p.rr}}" fill="none" stroke-width="2.5" style="stroke: var(--line)"></circle>
+            <circle cx="{{p.rc}}" cy="{{p.rc}}" r="{{p.rr}}" fill="none" stroke="{{accent}}" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="{{p.rC}}" stroke-dashoffset="{{p.rOff}}"></circle>
+          </svg>
+        </sc-if>
+        <div class="avatar" style="width: {{p.av}}px; height: {{p.av}}px; font-size: {{p.avF}}px; background: {{p.hex}}">{{p.ini}}</div>
+        <sc-if value="{{p.hasBadge}}" hint-placeholder-val="{{ false }}">
+          <div class="badge" style="position: absolute; left: -8px; top: -4px; background: {{p.badgeBg}}; color: {{p.badgeFg}}; box-shadow: {{p.badgeSh}}">{{p.badge}}</div>
+        </sc-if>
+        <sc-if value="{{p.backs}}" hint-placeholder-val="{{ true }}">
+          <div aria-hidden="true" style="position: absolute; right: {{p.bkR}}px; top: {{p.bkT}}px; width: {{p.bkBox}}px; height: {{p.bkBox}}px">
+            <div class="back" style="position: absolute; left: 0; top: 2px; width: {{p.bkW}}px; height: {{p.bkH}}px; border-radius: 4px; transform: rotate(-9deg)"><svg width="{{p.bkI}}" height="{{p.bkI}}" viewBox="0.8 1.75 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="16" r="4.5"></circle><path d="M9 11.5V8.5"></path><path d="M6.5 8.5a2.5 2.5 0 0 1 5 0z"></path><path d="M11.2 7.4l7.3 5.1"></path><circle cx="18.5" cy="16.5" r="2.6"></circle></svg></div>
+            <div class="back" style="position: absolute; left: {{p.bk2}}px; top: 0; width: {{p.bkW}}px; height: {{p.bkH}}px; border-radius: 4px; transform: rotate(8deg)"><svg width="{{p.bkI}}" height="{{p.bkI}}" viewBox="0.8 1.75 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="16" r="4.5"></circle><path d="M9 11.5V8.5"></path><path d="M6.5 8.5a2.5 2.5 0 0 1 5 0z"></path><path d="M11.2 7.4l7.3 5.1"></path><circle cx="18.5" cy="16.5" r="2.6"></circle></svg></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{p.faces}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 50%; top: -40px; width: 44px; height: 34px; transform: translateX(-50%)">
+            <div class="card flip" style="position: absolute; left: 0; top: 2px; width: 22px; height: 31px; border-radius: 4px; color: {{p.f1.color}}; opacity: {{p.f1.op}}; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; transform: rotate(-7deg)">
+              <span style="font-size: 11px; font-weight: 800">{{p.f1.rank}}</span><span style="font-size: 10px">{{p.f1.suit}}</span>
+            </div>
+            <div class="card flip" style="position: absolute; left: 19px; top: 0; width: 22px; height: 31px; border-radius: 4px; color: {{p.f2.color}}; opacity: {{p.f2.op}}; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; animation-delay: 90ms">
+              <span style="font-size: 11px; font-weight: 800">{{p.f2.rank}}</span><span style="font-size: 10px">{{p.f2.suit}}</span>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{p.active}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 50%; bottom: -11px; transform: translateX(-50%)"><div class="tag pop" style="box-shadow: inset 0 0 0 1.5px {{accent}}">{{p.timeTxt}}</div></div>
+        </sc-if>
+        <sc-if value="{{p.actA}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 50%; bottom: -11px; transform: translateX(-50%)"><div class="tag pop">{{p.act}}</div></div>
+        </sc-if>
+        <sc-if value="{{p.actB}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 50%; bottom: -11px; transform: translateX(-50%)"><div class="tag pop">{{p.act}}</div></div>
+        </sc-if>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 1px">
+        <span style="font-size: {{p.nameF}}px; font-weight: 800">{{p.name}}</span>
+        <span class="mono" style="font-size: {{p.stackF}}px; color: var(--muted)">{{p.stackTxt}}</span>
+      </div>
+    </div>
+    <sc-if value="{{p.hasBet}}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: {{p.chipX}}px; top: {{p.chipY}}px; transform: {{p.chipTr}}; opacity: {{p.chipO}}; transition: transform 440ms cubic-bezier(.3,.7,.2,1), opacity 440ms ease">
+        <div class="chip chipIn"><span class="tstack"><sc-for list="{{p.stack}}" as="k" hint-placeholder-count="3"><span class="tchip" style="bottom: {{k.b}}px"><svg viewBox="0 0 22 8" width="20" height="7.3" aria-hidden="true" style="display: block; overflow: visible"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="{{k.side}}"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="{{k.spot}}" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="{{k.bg}}"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="{{k.spot}}" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></svg></span></sc-for></span><span class="mono">{{p.betTxt}}</span></div>
+      </div>
+    </sc-if>
+  </sc-for>
+
+  <sc-if value="{{meHasBet}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: {{cx}}px; top: {{myChipY}}px; transform: {{meChipTr}}; opacity: {{meChipO}}; transition: transform 440ms cubic-bezier(.3,.7,.2,1), opacity 440ms ease">
+      <div class="chip chipIn"><span class="tstack"><sc-for list="{{meStack}}" as="k" hint-placeholder-count="3"><span class="tchip" style="bottom: {{k.b}}px"><svg viewBox="0 0 22 8" width="20" height="7.3" aria-hidden="true" style="display: block; overflow: visible"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="{{k.side}}"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="{{k.spot}}" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="{{k.bg}}"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="{{k.spot}}" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></svg></span></sc-for></span><span class="mono">{{meBetTxt}}</span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{labelA}}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; left: {{colL}}px; width: {{colW}}px; top: {{labelT}}px; display: flex; justify-content: center">
+      <button class="btn ghost pop" onClick="{{openRanks}}" aria-label="{{labelAria}}" style="height: 44px; display: flex; align-items: center">
+        <span class="neu-sm" style="height: 34px; padding: 0 14px; border-radius: 17px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; white-space: nowrap"><span>{{labelTitle}}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="color: var(--muted)"><path d="M8 6h12"></path><path d="M8 12h12"></path><path d="M8 18h12"></path><path d="M4 6h.01"></path><path d="M4 12h.01"></path><path d="M4 18h.01"></path></svg></span>
+      </button>
+    </div>
+  </sc-if>
+  <sc-if value="{{labelB}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: {{colL}}px; width: {{colW}}px; top: {{labelT}}px; display: flex; justify-content: center">
+      <button class="btn ghost pop" onClick="{{openRanks}}" aria-label="{{labelAria}}" style="height: 44px; display: flex; align-items: center">
+        <span class="neu-sm" style="height: 34px; padding: 0 14px; border-radius: 17px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; white-space: nowrap"><span>{{labelTitle}}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="color: var(--muted)"><path d="M8 6h12"></path><path d="M8 12h12"></path><path d="M8 18h12"></path><path d="M4 6h.01"></path><path d="M4 12h.01"></path><path d="M4 18h.01"></path></svg></span>
+      </button>
+    </div>
+  </sc-if>
+
+  <div style="position: absolute; left: {{colL}}px; width: {{colW}}px; top: {{mineT}}px; display: flex; justify-content: center">
+    <sc-for list="{{mine}}" as="c" hint-placeholder-count="2">
+      <div style="margin-left: {{c.ml}}px; transform: translateY({{c.y}}px) rotate({{c.rot}}deg); opacity: {{c.op}}; transition: transform 380ms cubic-bezier(.3,1.4,.5,1), opacity 300ms ease">
+        <div class="card flip" style="position: relative; width: {{c.w}}px; height: {{c.h}}px; border-radius: {{c.r}}px; color: {{c.color}}; animation-delay: {{c.delay}}">
+          <div style="position: absolute; left: {{c.pad}}px; top: {{c.padT}}px; display: flex; flex-direction: column; align-items: center; line-height: 1">
+            <span style="font-size: {{c.rkF}}px; font-weight: 800; letter-spacing: -0.04em">{{c.rank}}</span>
+            <span style="font-size: {{c.stF}}px; margin-top: 3px">{{c.suit}}</span>
+          </div>
+          <span style="position: absolute; right: {{c.pad}}px; bottom: {{c.padB}}px; font-size: {{c.bgF}}px; line-height: 1">{{c.suit}}</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="position: absolute; left: {{colL}}px; width: {{colW}}px; top: {{plateT}}px; height: 44px; display: flex; justify-content: center; align-items: center">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <div style="position: relative; width: 34px; height: 34px; flex: none">
+        <sc-if value="{{meActive}}" hint-placeholder-val="{{ true }}">
+          <svg class="fade" aria-hidden="true" width="46" height="46" viewBox="0 0 46 46" style="position: absolute; left: -6px; top: -6px; transform: rotate(-90deg)">
+            <circle cx="23" cy="23" r="20.5" fill="none" stroke-width="2.5" style="stroke: var(--line)"></circle>
+            <circle cx="23" cy="23" r="20.5" fill="none" stroke="{{accent}}" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="128.8" stroke-dashoffset="{{meRingOff}}"></circle>
+          </svg>
+        </sc-if>
+        <div class="avatar" style="width: 34px; height: 34px; font-size: 13px; background: #8FB3B5">K</div>
+      </div>
+      <span class="mono" style="font-size: 18px; font-weight: 700; letter-spacing: -0.03em">{{stackTxt}}</span>
+      <span style="font-size: 13px; color: var(--muted); white-space: nowrap">{{plateStatus}}</span>
+      <button class="btn ghost" aria-label="Table info and chip values" onClick="{{openInfo}}" style="width: 44px; height: 44px; margin: 0 -9px 0 -6px; display: flex; align-items: center; justify-content: center">
+        <span class="neu-sm" style="width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--muted)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 11v6"></path><path d="M12 7h.01"></path></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: {{barL}}px; width: {{barW}}px; top: {{barT}}px; height: {{barH}}px">
+    <sc-if value="{{showActions}}" hint-placeholder-val="{{ true }}">
+      <div class="fade" style="height: 100%; display: grid; grid-template-columns: {{barCols}}; gap: 12px">
+        <button class="btn neu" onClick="{{onFold}}" style="border-radius: 18px; font-size: 16px; font-weight: 800">Fold</button>
+        <button class="btn accentBtn" onClick="{{onCall}}" style="border-radius: 18px; font-size: 16px; font-weight: 800; background: {{accent}}">{{callLabel}}</button>
+        <sc-if value="{{canRaise}}" hint-placeholder-val="{{ true }}">
+          <button class="btn neu" onClick="{{openRaise}}" style="border-radius: 18px; font-size: 16px; font-weight: 800">{{raiseLabel}}</button>
+        </sc-if>
+      </div>
+    </sc-if>
+    <sc-if value="{{undoA}}" hint-placeholder-val="{{ false }}">
+      <div class="neu pop" role="status" style="position: relative; height: 100%; border-radius: 18px; overflow: hidden; display: flex; align-items: center; gap: 12px; padding: 0 6px 0 18px; box-sizing: border-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        <span style="flex: 1; min-width: 0; font-size: 16px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{pendingTxt}}</span>
+        <button class="btn inset" onClick="{{onUndo}}" style="height: 44px; padding: 0 18px; border-radius: 14px; font-size: 15px; font-weight: 800">Undo</button>
+        <span class="drain" style="position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: {{accent}}"></span>
+      </div>
+    </sc-if>
+    <sc-if value="{{undoB}}" hint-placeholder-val="{{ false }}">
+      <div class="neu pop" role="status" style="position: relative; height: 100%; border-radius: 18px; overflow: hidden; display: flex; align-items: center; gap: 12px; padding: 0 6px 0 18px; box-sizing: border-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        <span style="flex: 1; min-width: 0; font-size: 16px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{pendingTxt}}</span>
+        <button class="btn inset" onClick="{{onUndo}}" style="height: 44px; padding: 0 18px; border-radius: 14px; font-size: 15px; font-weight: 800">Undo</button>
+        <span class="drain" style="position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: {{accent}}"></span>
+      </div>
+    </sc-if>
+    <sc-if value="{{showPre}}" hint-placeholder-val="{{ false }}">
+      <div class="fade" role="group" aria-label="Pre-select your next move" style="height: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{preOpts}}" as="o" hint-placeholder-count="3">
+          <button class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}" style="height: 100%">
+            <span style="display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted)"><span style="width: 6px; height: 6px; border-radius: 50%; background: {{o.dot}}"></span>Auto</span>
+            <span style="font-size: 14px; font-weight: 800; white-space: nowrap">{{o.label}}</span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{showWait}}" hint-placeholder-val="{{ false }}">
+      <div class="inset fade" style="height: 100%; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: var(--muted)">{{waitTxt}}</div>
+    </sc-if>
+    <sc-if value="{{doneOk}}" hint-placeholder-val="{{ false }}">
+      <button class="btn accentBtn pop" onClick="{{next}}" style="width: 100%; height: 100%; border-radius: 18px; font-size: 16px; font-weight: 800; background: {{accent}}">Next hand</button>
+    </sc-if>
+    <sc-if value="{{doneBroke}}" hint-placeholder-val="{{ false }}">
+      <a href="Rebuy.dc.html" class="btn accentBtn pop" style="width: 100%; height: 100%; border-radius: 18px; font-size: 16px; font-weight: 800; background: {{accent}}; display: flex; align-items: center; justify-content: center">Out of chips · free rebuy</a>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{hasBubble}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: {{bubbleL}}px; top: {{bubbleT}}px; width: 250px; display: flex; justify-content: center; pointer-events: none">
+      <div class="neu bubble" role="status" style="padding: 10px 16px 11px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center">
+        <span style="font-size: 17px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15">“{{bubbleText}}”</span>
+        <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted)"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{bubbleHex}}"></span>{{bubbleWho}} takes it</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{toastA}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: {{toastL}}px; width: {{toastW}}px; top: 12px; display: flex; justify-content: center; pointer-events: none">
+      <div class="neu toastIn" role="status" style="width: {{toastIW}}; justify-content: center; min-height: 48px; box-sizing: border-box; padding: 0 20px; border-radius: 24px; display: flex; align-items: center; font-size: 14px; font-weight: 600; text-align: center">{{toastTxt}}</div>
+    </div>
+  </sc-if>
+  <sc-if value="{{toastB}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: {{toastL}}px; width: {{toastW}}px; top: 12px; display: flex; justify-content: center; pointer-events: none">
+      <div class="neu toastIn" role="status" style="width: {{toastIW}}; justify-content: center; min-height: 48px; box-sizing: border-box; padding: 0 20px; border-radius: 24px; display: flex; align-items: center; font-size: 14px; font-weight: 600; text-align: center">{{toastTxt}}</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{sheet}}" hint-placeholder-val="{{ false }}">
+    <button class="fade" aria-label="Close raise sheet" onClick="{{closeSheet}}" style="position: absolute; inset: 0; border: 0; padding: 0; background: rgba(10,12,16,.28); cursor: pointer"></button>
+    <div class="sheetUp" role="dialog" aria-label="Raise" style="position: absolute; left: {{sheetL}}px; width: {{sheetW}}px; bottom: 0; box-sizing: border-box; padding: 12px 20px 26px; border-radius: 30px 30px 0 0; background: var(--bg); box-shadow: 0 -10px 30px var(--sd); display: flex; flex-direction: column; gap: 16px">
+      <div style="align-self: center; width: 36px; height: 5px; border-radius: 3px; background: var(--muted); opacity: .4"></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <span class="caps">{{sheetTitle}}</span>
+        <span class="mono" style="font-size: 12px; color: var(--muted)">of {{maxRTxt}}</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <button class="btn neu-sm" aria-label="Lower by $2" disabled="{{atMinR}}" onClick="{{dec}}" style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"></path></svg>
+        </button>
+        <span class="mono" aria-live="polite" style="font-size: 46px; font-weight: 700; letter-spacing: -0.04em; line-height: 1">{{raiseTxt}}</span>
+        <button class="btn neu-sm" aria-label="Raise by $2" disabled="{{atMaxR}}" onClick="{{inc}}" style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        </button>
+      </div>
+      <div aria-hidden="true" style="display: flex; justify-content: center; align-items: flex-end; gap: 14px">
+        <sc-for list="{{towers}}" as="t" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 7px; opacity: {{t.op}}; transition: opacity 200ms ease">
+            <div style="position: relative; width: 46px; height: 60px; display: flex; flex-direction: column-reverse; align-items: center">
+              <div class="inset" style="position: absolute; left: 0; bottom: -4px; width: 46px; height: 14px; border-radius: 7px"></div>
+              <sc-for list="{{t.chips}}" as="c" hint-placeholder-count="2">
+                <div class="twchip" style="animation-delay: {{c.delay}}"><svg viewBox="0 0 22 8" width="40" height="14.5" aria-hidden="true" style="display: block; overflow: visible"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="{{t.side}}"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="{{t.spot}}" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="{{t.bg}}"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="{{t.spot}}" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></svg></div>
+              </sc-for>
+            </div>
+            <span class="mono" style="font-size: 10px; font-weight: 600; color: var(--muted)">{{t.label}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <label for="raise-amt" class="caps">Amount</label>
+        <input id="raise-amt" type="range" min="{{minR}}" max="{{maxR}}" step="1" value="{{raiseTo}}" aria-valuetext="{{raiseTxt}}" onChange="{{onSlide}}">
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{presets}}" as="x" hint-placeholder-count="4">
+          <button class="{{x.cls}}" onClick="{{x.pick}}" style="height: 52px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
+            <span style="font-size: 13px; font-weight: 800">{{x.label}}</span>
+            <span class="mono" style="font-size: 11px; color: var(--muted)">{{x.amtTxt}}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1.7fr; gap: 12px">
+        <button class="btn neu" onClick="{{closeSheet}}" style="height: 56px; border-radius: 18px; font-size: 16px; font-weight: 800">Cancel</button>
+        <sc-if value="{{notAllIn}}" hint-placeholder-val="{{ true }}">
+          <button class="btn accentBtn" onClick="{{confirmRaise}}" style="height: 56px; border-radius: 18px; font-size: 16px; font-weight: 800; background: {{accent}}">{{confirmLabel}}</button>
+        </sc-if>
+        <sc-if value="{{isAllIn}}" hint-placeholder-val="{{ false }}">
+          <button class="btn accentBtn hold" aria-label="Press and hold to go all-in" onPointerDown="{{holdStart}}" onPointerUp="{{holdEnd}}" onPointerLeave="{{holdEnd}}" onPointerCancel="{{holdEnd}}" onKeyDown="{{holdKey}}" onKeyUp="{{holdEnd}}" style="position: relative; overflow: hidden; height: 56px; border-radius: 18px; font-size: 16px; font-weight: 800; background: {{accent}}">
+            <span style="position: absolute; left: 0; top: 0; bottom: 0; width: {{holdW}}; background: rgba(0,0,0,.2); transition: {{holdTr}}"></span>
+            <span style="position: relative">{{holdLabel}}</span>
+          </button>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ranksOpen}}" hint-placeholder-val="{{ false }}">
+    <button class="fade" aria-label="Close hand rankings" onClick="{{closeRanks}}" style="position: absolute; inset: 0; border: 0; padding: 0; background: rgba(10,12,16,.28); cursor: pointer"></button>
+    <div class="sheetUp" role="dialog" aria-label="Hand rankings" style="position: absolute; left: {{sheetL}}px; width: {{sheetW}}px; bottom: 0; box-sizing: border-box; padding: 12px 20px 26px; border-radius: 30px 30px 0 0; background: var(--bg); box-shadow: 0 -10px 30px var(--sd); display: flex; flex-direction: column; gap: 12px">
+      <div style="align-self: center; width: 36px; height: 5px; border-radius: 3px; background: var(--muted); opacity: .4"></div>
+      <div style="display: flex; align-items: baseline; justify-content: space-between">
+        <span style="font-size: 24px; font-weight: 800; letter-spacing: -0.03em">Hand rankings</span>
+        <span class="caps">Strongest first</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <sc-for list="{{ranks}}" as="r" hint-placeholder-count="10">
+          <div class="{{r.cls}}" style="height: 44px; border-radius: 14px; padding: 0 10px; display: flex; align-items: center; gap: 10px; animation-delay: {{r.delay}}">
+            <span class="mono" style="width: 18px; font-size: 12px; color: var(--muted)">{{r.n}}</span>
+            <span style="flex: 1; min-width: 0; font-size: 15px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap">{{r.name}}</span>
+            <sc-if value="{{r.mine}}" hint-placeholder-val="{{ false }}">
+              <span class="mono" style="height: 20px; padding: 0 7px; border-radius: 10px; font-size: 10px; font-weight: 700; display: flex; align-items: center; background: {{accent}}; color: #1B0F0A">YOU</span>
+            </sc-if>
+            <div style="display: flex; gap: 3px">
+              <sc-for list="{{r.cards}}" as="c" hint-placeholder-count="5">
+                <div class="mini" style="color: {{c.color}}"><span>{{c.rank}}</span><span style="font-size: 9px; margin-top: 1px">{{c.suit}}</span></div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{infoOpen}}" hint-placeholder-val="{{ false }}">
+    <button class="fade" aria-label="Close table info" onClick="{{closeInfo}}" style="position: absolute; inset: 0; border: 0; padding: 0; background: rgba(10,12,16,.28); cursor: pointer"></button>
+    <div class="sheetUp" role="dialog" aria-label="Table info" style="position: absolute; left: {{sheetL}}px; width: {{sheetW}}px; bottom: 0; box-sizing: border-box; padding: 12px 20px 26px; border-radius: 30px 30px 0 0; background: var(--bg); box-shadow: 0 -10px 30px var(--sd); display: flex; flex-direction: column; gap: 14px">
+      <div style="align-self: center; width: 36px; height: 5px; border-radius: 3px; background: var(--muted); opacity: .4"></div>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 24px; font-weight: 800; letter-spacing: -0.03em">Friday Night</span>
+        <span class="mono" style="font-size: 12px; color: var(--muted)">No-limit Hold’em · set by Mia</span>
+      </div>
+      <span class="caps">Chip denominations</span>
+      <div class="inset" style="border-radius: 16px; padding: 12px 10px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{denoms}}" as="d" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+            <span class="{{d.cls}}" style="background-color: {{d.color}}"></span>
+            <span class="mono" style="font-size: 13px; font-weight: 700">{{d.label}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <span class="caps">Rules</span>
+      <div class="neu-sm" style="border-radius: 18px; padding: 4px 16px">
+        <sc-for list="{{rules}}" as="u" hint-placeholder-count="5">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; height: 42px; border-top: {{u.border}}; font-size: 14px">
+            <span style="font-weight: 700">{{u.k}}</span>
+            <span class="mono" style="font-size: 13px; color: var(--muted); text-align: right">{{u.v}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <button class="btn neu" onClick="{{closeInfo}}" style="height: 54px; border-radius: 18px; font-size: 16px; font-weight: 800">Done</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{recapOpen}}" hint-placeholder-val="{{ false }}">
+    <button class="fade" aria-label="Close recap" onClick="{{closeRecap}}" style="position: absolute; inset: 0; border: 0; padding: 0; background: rgba(10,12,16,.28); cursor: pointer"></button>
+    <div class="sheetUp" role="dialog" aria-label="While you were away" style="position: absolute; left: {{sheetL}}px; width: {{sheetW}}px; bottom: 0; height: {{recapH}}px; box-sizing: border-box; padding: 12px 20px 26px; border-radius: 30px 30px 0 0; background: var(--bg); box-shadow: 0 -10px 30px var(--sd); display: flex; flex-direction: column; gap: 14px">
+      <div style="align-self: center; width: 36px; height: 5px; border-radius: 3px; background: var(--muted); opacity: .4; flex: none"></div>
+      <div style="display: flex; flex-direction: column; gap: 4px; flex: none">
+        <span class="caps">While you were away</span>
+        <span style="font-size: 30px; font-weight: 800; letter-spacing: -0.035em; line-height: 1">Welcome back</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; flex: none">
+        <sc-for list="{{awayTiles}}" as="t" hint-placeholder-count="3">
+          <div class="inset" style="border-radius: 16px; padding: 10px 12px; display: flex; flex-direction: column; gap: 3px; min-width: 0"><span class="caps">{{t.k}}</span><span class="mono" style="font-size: 18px; font-weight: 700; letter-spacing: -0.03em; white-space: nowrap">{{t.v}}</span></div>
+        </sc-for>
+      </div>
+      <div class="neu" style="flex: 1; min-height: 0; border-radius: 20px; padding: 0 14px 8px; overflow-y: auto; display: flex; flex-direction: column-reverse">
+        <div>
+          <sc-for list="{{feed}}" as="r" hint-placeholder-count="10">
+            <div class="rowIn" style="animation-delay: {{r.delay}}">
+              <sc-if value="{{r.isAway}}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; gap: 8px; padding: 12px 0 4px"><span style="flex: 1; height: 1px; background: var(--line)"></span><span class="caps">While you were away</span><span style="flex: 1; height: 1px; background: var(--line)"></span></div>
+              </sc-if>
+              <sc-if value="{{r.isHand}}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0 4px"><span style="font-size: 15px; font-weight: 800">{{r.title}}</span><span class="mono" style="font-size: 11px; color: var(--muted)">{{r.note}}</span></div>
+              </sc-if>
+              <sc-if value="{{r.isAct}}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; align-items: center; gap: 10px; height: 36px">
+                  <div class="avatar" style="width: 24px; height: 24px; font-size: 10px; background: {{r.hex}}; box-shadow: none">{{r.ini}}</div>
+                  <span style="flex: 1; min-width: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"><span style="font-weight: 800">{{r.who}}</span> {{r.verb}} <span class="mono" style="font-weight: 700">{{r.amt}}</span></span>
+                  <sc-if value="{{r.hasTag}}" hint-placeholder-val="{{ false }}"><span class="tagS">{{r.tag}}</span></sc-if>
+                  <span class="mono" style="font-size: 11px; color: var(--muted)">{{r.ago}}</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{r.isBoard}}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; gap: 10px; height: 42px">
+                  <span class="caps" style="width: 46px">{{r.street}}</span>
+                  <div style="display: flex; gap: 4px"><sc-for list="{{r.cards}}" as="c" hint-placeholder-count="3"><div class="mini" style="color: {{c.color}}"><span>{{c.rank}}</span><span style="font-size: 9px; margin-top: 1px">{{c.suit}}</span></div></sc-for></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{r.isResult}}" hint-placeholder-val="{{ false }}">
+                <div class="inset" style="margin: 6px 0 4px; border-radius: 14px; padding: 10px 12px; display: flex; align-items: center; gap: 10px">
+                  <svg viewBox="0 0 22 12.4" width="18" height="10.1" aria-hidden="true" style="display: block; flex: none; overflow: visible; filter: drop-shadow(0 1px 0.8px rgba(0,0,0,.28))"><g transform="translate(0 4.4)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#375546"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(255,255,255,.85)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#4E7A64"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g><g transform="translate(0 2.2)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#7f423b"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(255,255,255,.85)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#B65F55"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g><g transform="translate(0 0.0)"><path d="M0.6 3V5.1A10.4 2.5 0 0 0 21.4 5.1V3Z" fill="#c6c3bb"></path><path d="M3.6 4.9V6.7M9.8 5.45V7.5M16.2 5.2V7.2" stroke="rgba(21,24,29,.5)" stroke-width="1.6"></path><ellipse cx="11" cy="3" rx="10.4" ry="2.5" fill="#ECE8DF"></ellipse><ellipse cx="11" cy="3" rx="7" ry="1.6" fill="none" stroke="rgba(21,24,29,.5)" stroke-width="0.7" stroke-dasharray="1.8 1.4"></ellipse></g></svg>
+                  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-size: 14px"><span style="font-weight: 800">{{r.who}}</span> won <span class="mono" style="font-weight: 700">{{r.amt}}</span></span>
+                    <sc-if value="{{r.hasHand}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: var(--muted)">{{r.hand}}</span></sc-if>
+                  </div>
+                  <sc-if value="{{r.hasShown}}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: 3px"><sc-for list="{{r.shown}}" as="c" hint-placeholder-count="2"><div class="mini" style="color: {{c.color}}"><span>{{c.rank}}</span><span style="font-size: 9px; margin-top: 1px">{{c.suit}}</span></div></sc-for></div></sc-if>
+                </div>
+              </sc-if>
+              <sc-if value="{{r.isTurn}}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; gap: 10px; height: 40px">
+                  <span class="breathe" style="width: 9px; height: 9px; border-radius: 50%; background: {{accent}}; margin: 0 7px; flex: none"></span>
+                  <span style="font-size: 15px; font-weight: 800">You’re up</span>
+                  <span class="mono" style="font-size: 13px; color: var(--muted)">{{r.turnTxt}}</span>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <button class="btn accentBtn" onClick="{{closeRecap}}" style="height: 56px; flex: none; border-radius: 18px; font-size: 17px; font-weight: 800; background: {{accent}}">{{recapCta}}</button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"fourColor":{"editor":"boolean","default":false},"accent":{"editor":"color","default":"#FF5B2E","options":["#FF5B2E","#C6F432","#5AC8FA"]},"$preview":{"width":390,"height":844}}'>
+const LAYOUT_ID = 'phone';
+// 'nudge' = opened from the group-chat nudge link: on phones the recap slides over the table first
+const ENTRY = 'nudge';
+
+const PEOPLE = [
+  { name: 'Mia', ini: 'M', hex: '#9DB8A0', deg: 270, badge: 'SB', time: '7h', pct: 0.58, stack0: 213, bet0: 1, act0: '', phrase: 'Mia never bluffs. Mostly.' },
+  { name: 'Jay', ini: 'J', hex: '#93AAC7', deg: 210, badge: 'D', time: '3h', pct: 0.25, stack0: 88, bet0: 0, act0: '', phrase: 'Jay sends his regards.' },
+  { name: 'Priya', ini: 'P', hex: '#C9A08C', deg: 330, badge: 'BB', time: '5h', pct: 0.42, stack0: 298, bet0: 2, act0: '', phrase: 'Priya saw that coming.' },
+  { name: 'Sam', ini: 'S', hex: '#B59BB8', deg: 150, badge: '', time: '9h', pct: 0.75, stack0: 156, bet0: 0, act0: '', phrase: 'Sam is just here for snacks.' },
+  { name: 'Theo', ini: 'T', hex: '#CDB98A', deg: 30, badge: '', time: '2h', pct: 0.17, stack0: 184, bet0: 6, act0: 'Raise $6', phrase: 'Fortune favors the bold.' }
+];
+const ME = { name: 'You', ini: 'K', hex: '#8FB3B5', phrase: 'Read ’em and weep.' };
+
+const LAYOUTS = {
+  phone: { W: 390, H: 844, pad: 20, wide: false, rails: 0, autoRecap: true, col: [0, 390],
+    seats: [[195, 98, 195, 188], [120, 114, 120, 203], [270, 114, 270, 203], [44, 158, 44, 244], [346, 158, 346, 244]],
+    av: 52, seatW: 84, seatGap: 12, nameF: 13, stackF: 12,
+    felt: [16, 254, 358, 268], card: [52, 72, 8], boardT: 300, potT: 384, toCallT: 436, myChipY: 480,
+    labelT: 540, mine: [86, 120], mineT: 592, plateT: 722, bar: [16, 772, 358, 56], sheetW: 390, recapH: 760 },
+  cover: { W: 344, H: 972, pad: 16, wide: false, rails: 0, autoRecap: true, col: [0, 344],
+    seats: [[172, 104, 172, 190], [105, 118, 105, 204], [239, 118, 239, 204], [38, 148, 38, 236], [306, 148, 306, 236]],
+    av: 40, seatW: 68, seatGap: 14, nameF: 12, stackF: 11,
+    felt: [12, 258, 320, 298], card: [50, 70, 6], boardT: 312, potT: 394, toCallT: 446, myChipY: 516,
+    labelT: 580, mine: [80, 112], mineT: 634, plateT: 764, bar: [14, 872, 316, 56], sheetW: 344, recapH: 880 },
+  foldopen: { W: 720, H: 840, pad: 24, wide: true, rails: 0, autoRecap: true, col: [0, 720],
+    geo: [360, 312, 250, 140, 66], av: 52, seatW: 96, seatGap: 12, nameF: 13, stackF: 12,
+    card: [52, 74, 8], labelT: 470, mine: [80, 112], mineT: 526, plateT: 652, bar: [80, 752, 560, 56], sheetW: 520, recapH: 760 },
+  tablet: { W: 1180, H: 820, pad: 24, wide: true, rails: 1, autoRecap: false, col: [0, 840],
+    geo: [420, 312, 280, 140, 70], av: 56, seatW: 100, seatGap: 13, nameF: 14, stackF: 12,
+    card: [58, 82, 9], labelT: 470, mine: [84, 118], mineT: 526, plateT: 658, bar: [140, 714, 560, 56], sheetW: 520, recapH: 740,
+    rr: [864, 84, 292, 716] },
+  desktop: { W: 1440, H: 900, pad: 24, wide: true, rails: 2, autoRecap: false, col: [304, 812],
+    geo: [710, 360, 300, 160, 74], av: 60, seatW: 100, seatGap: 14, nameF: 14, stackF: 12,
+    card: [64, 90, 10], labelT: 538, mine: [90, 126], mineT: 596, plateT: 734, bar: [430, 794, 560, 56], sheetW: 520, recapH: 800,
+    rr: [1116, 92, 300, 784], lr: [24, 92, 280, 784] }
+};
+
+const L = (function (l) {
+  const o = Object.assign({}, l);
+  o.cx = l.col[0] + l.col[1] / 2;
+  if (l.wide) {
+    const cx = l.geo[0], cy = l.geo[1], rx = l.geo[2], ry = l.geo[3], off = l.geo[4];
+    o.cx = cx;
+    o.felt = [cx - rx, cy - ry, 2 * rx, 2 * ry];
+    o.boardT = cy - l.card[1] / 2 - 16;
+    o.potT = o.boardT + l.card[1] + 12;
+    o.toCallT = o.potT + 52;
+    o.myChipY = cy + ry - 22;
+    // the top seat's name + stack sit below its avatar, toward the felt: give it room to clear the rim
+    const offTop = Math.max(off, l.av / 2 + l.seatGap + 42);
+    o.seatPos = PEOPLE.map(function (p) {
+      const a = p.deg * Math.PI / 180;
+      const oy = Math.sin(a) < -0.9 ? offTop : off;
+      return {
+        x: Math.round(cx + (rx + off) * Math.cos(a)), y: Math.round(cy + (ry + oy) * Math.sin(a)),
+        cx: Math.round(cx + rx * 0.8 * Math.cos(a)), cy: Math.round(cy + ry * 0.8 * Math.sin(a))
+      };
+    });
+  } else {
+    o.seatPos = l.seats.map(function (s) { return { x: s[0], y: s[1], cx: s[2], cy: s[3] }; });
+  }
+  o.CX = o.cx;
+  o.CY = o.potT + 24;
+  return o;
+})(LAYOUTS[LAYOUT_ID]);
+
+const BOARD = ['Kd', '7c', '2s', 'Qh', '7s'];
+const MINE = ['Ks', '7h'];
+const HANDS = [['5d', '4d'], ['Jc', '3h'], ['9d', '9c'], ['8s', '6c'], ['Ac', 'Kh']];
+const RV = { T: 10, J: 11, Q: 12, K: 13, A: 14 };
+const RN = { 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: '10', 11: 'J', 12: 'Q', 13: 'K', 14: 'A' };
+const NAME = { 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight', 9: 'Nine', 10: 'Ten', 11: 'Jack', 12: 'Queen', 13: 'King', 14: 'Ace' };
+const PL = { 2: 'Twos', 3: 'Threes', 4: 'Fours', 5: 'Fives', 6: 'Sixes', 7: 'Sevens', 8: 'Eights', 9: 'Nines', 10: 'Tens', 11: 'Jacks', 12: 'Queens', 13: 'Kings', 14: 'Aces' };
+const SUIT = { s: '♠', h: '♥', d: '♦', c: '♣' };
+const TWO_COLOR = { s: '#15181D', h: '#C9303C', d: '#C9303C', c: '#15181D' };
+const FOUR_COLOR = { s: '#15181D', h: '#C9303C', d: '#2563A8', c: '#2E7D4F' };
+const DENOMS = [
+  { v: 100, color: '#2A2F38', light: false },
+  { v: 25, color: '#4E7A64', light: false },
+  { v: 5, color: '#B65F55', light: false },
+  { v: 1, color: '#ECE8DF', light: true }
+];
+// position buttons: each its own color, and always labeled, so color is never the only cue
+const BADGES = {
+  D: { bg: '#F4F1EA', fg: '#15181D', sh: 'inset 0 0 0 1.5px rgba(21,24,29,.22), 0 1px 3px rgba(0,0,0,.25)' },
+  SB: { bg: '#4F6F91', fg: '#FFFFFF', sh: '0 1px 3px rgba(0,0,0,.25)' },
+  BB: { bg: '#9A4E45', fg: '#FFFFFF', sh: '0 1px 3px rgba(0,0,0,.25)' }
+};
+// a bet drawn as a real stack: fewest chips, biggest at the bottom, capped so tall bets stay tidy
+const STACK_MAX = 10;
+function shade(hex, f) {
+  const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255].map(function (v) { return Math.round(v * (1 - f)); });
+  return '#' + c.map(function (v) { return v.toString(16).padStart(2, '0'); }).join('');
+}
+function chipPaint(d) { return { bg: d.color, side: shade(d.color, d.light ? 0.16 : 0.3), spot: d.light ? 'rgba(21,24,29,.5)' : 'rgba(255,255,255,.85)' }; }
+function stackOf(amount) {
+  const out = []; let rest = amount;
+  DENOMS.forEach(function (d) { let n = Math.floor(rest / d.v); rest -= n * d.v; while (n-- > 0) out.push(d); });
+  return out.slice(0, STACK_MAX).map(function (d, i) { return Object.assign(chipPaint(d), { b: +(i * 2.1).toFixed(1) }); });
+}
+const RANKS = [
+  ['Royal Flush', ['As', 'Ks', 'Qs', 'Js', 'Ts']],
+  ['Straight Flush', ['9h', '8h', '7h', '6h', '5h']],
+  ['Four of a Kind', ['Qc', 'Qd', 'Qh', 'Qs', '3d']],
+  ['Full House', ['7s', '7d', '7c', 'Kh', 'Ks']],
+  ['Flush', ['Ad', 'Jd', '8d', '6d', '2d']],
+  ['Straight', ['Tc', '9d', '8s', '7h', '6c']],
+  ['Three of a Kind', ['5s', '5h', '5d', 'Kc', '2s']],
+  ['Two Pair', ['Jh', 'Jc', '4s', '4d', 'As']],
+  ['Pair', ['9s', '9d', 'Kh', '6c', '3s']],
+  ['High Card', ['Ac', 'Qd', '8s', '5h', '2c']]
+];
+const HISTORY = [
+  { k: 'away' },
+  { k: 'hand', title: 'Hand #13' },
+  { k: 'board', street: 'Board', cards: ['9s', '4h', 'Jd', '2c', '9c'] },
+  { k: 'act', who: 4, verb: 'bet', amt: 12, ago: '22h' },
+  { k: 'act', who: 2, verb: 'called', amt: 12, ago: '21h' },
+  { k: 'act', who: 5, verb: 'folded', tag: 'Timer', ago: '9h' },
+  { k: 'act', who: 2, verb: 'bet', amt: 18, ago: '8h' },
+  { k: 'act', who: 4, verb: 'called', amt: 18, ago: '3h' },
+  { k: 'result', who: 2, amt: 64, hand: 'Three of a Kind', shown: ['9d', 'Kh'] },
+  { k: 'hand', title: 'Hand #14' },
+  { k: 'act', who: 0, verb: 'posted', amt: 1, ago: '3h' },
+  { k: 'act', who: 2, verb: 'posted', amt: 2, ago: '3h' },
+  { k: 'act', who: 4, verb: 'raised to', amt: 6, ago: '18m' }
+];
+const RESP = {
+  0: { p: [[3, 'fold'], [1, 'fold'], [0, 'fold'], [2, 'call']], a: [[3, 'fold'], [1, 'fold'], [0, 'fold'], [2, 'fold'], [4, 'call']] },
+  1: { p: [[2, 'fold']], a: [[2, 'fold'], [4, 'call']] },
+  2: { p: [], a: [[2, 'fold'], [4, 'call']] },
+  3: { p: [[2, 'fold']], a: [[2, 'fold'], [4, 'call']] }
+};
+const OPEN = { 1: [[2, 'check'], [4, 'bet', 12]], 2: [[2, 'check'], [4, 'check']], 3: [[2, 'check'], [4, 'bet', 30]] };
+const PRE = [{ id: 'checkfold', label: 'Check/Fold' }, { id: 'check', label: 'Check' }, { id: 'callany', label: 'Call any' }];
+
+function parse(id) { const r = id[0]; return { id: id, v: RV[r] || Number(r), s: id[1] }; }
+function score5(cs) {
+  const rs = cs.map(function (c) { return c.v; }).sort(function (a, b) { return b - a; });
+  const flush = cs.every(function (c) { return c.s === cs[0].s; });
+  const uniq = rs.filter(function (v, i) { return rs.indexOf(v) === i; });
+  let sh = 0;
+  if (uniq.length === 5) { if (rs[0] - rs[4] === 4) sh = rs[0]; else if (rs[0] === 14 && rs[1] === 5) sh = 5; }
+  const cnt = {}; rs.forEach(function (v) { cnt[v] = (cnt[v] || 0) + 1; });
+  const groups = Object.keys(cnt).map(Number).sort(function (a, b) { return cnt[b] - cnt[a] || b - a; });
+  const shape = groups.map(function (g) { return cnt[g]; }).join('');
+  let cat = 0;
+  if (sh && flush) cat = 8; else if (shape === '41') cat = 7; else if (shape === '32') cat = 6; else if (flush) cat = 5;
+  else if (sh) cat = 4; else if (shape === '311') cat = 3; else if (shape === '221') cat = 2; else if (shape === '2111') cat = 1;
+  return { cat: cat, tb: (cat === 8 || cat === 4) ? [sh] : groups, groups: groups, sh: sh, ids: cs.map(function (c) { return c.id; }) };
+}
+function cmp(a, b) {
+  if (a.cat !== b.cat) return a.cat - b.cat;
+  for (let i = 0; i < Math.max(a.tb.length, b.tb.length); i++) { const d = (a.tb[i] || 0) - (b.tb[i] || 0); if (d) return d; }
+  return 0;
+}
+function best(ids) {
+  const cs = ids.map(parse); const n = cs.length; let top = null;
+  for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) for (let c = b + 1; c < n; c++) for (let d = c + 1; d < n; d++) for (let e = d + 1; e < n; e++) {
+    const r = score5([cs[a], cs[b], cs[c], cs[d], cs[e]]);
+    if (!top || cmp(r, top) > 0) top = r;
+  }
+  return top;
+}
+function labelOf(r) {
+  switch (r.cat) {
+    case 8: return r.sh === 14 ? 'Royal Flush' : 'Straight Flush';
+    case 7: return 'Four of a Kind';
+    case 6: return 'Full House';
+    case 5: return 'Flush';
+    case 4: return 'Straight';
+    case 3: return 'Three of a Kind';
+    case 2: return 'Two Pair';
+    case 1: return 'Pair';
+    default: return 'High Card';
+  }
+}
+function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+class Component extends DCLogic {
+  state = this.fresh(14, 200, true, []);
+  timers = [];
+  raf = null;
+  undoT = null;
+  holdT = null;
+
+  fresh(handNo, stack, first, log, prev) {
+    return {
+      handNo: handNo, street: 0, revealed: 0, phase: 'me', active: 5,
+      seats: PEOPLE.map(function (p, i) { return { stack: prev ? (prev[i].stack > 0 ? Math.max(0, prev[i].stack - p.bet0) : 200 - p.bet0) : p.stack0, bet: p.bet0, folded: false, act: p.act0, actV: 0, face: false }; }),
+      me: { stack: stack, bet: 0, folded: false },
+      pot: 0, dPot: PEOPLE.reduce(function (a, p) { return a + p.bet0; }, 0), dStack: stack, collecting: false, potTo: -2,
+      sheet: false, raiseTo: 12, holding: false,
+      ranksOpen: false, infoOpen: false, recapOpen: !!(first && ENTRY === 'nudge' && L.autoRecap),
+      toast: first && ENTRY === 'nudge' && L.autoRecap ? '' : 'Theo raised to $6. Your move.', toastV: 0,
+      winSet: null, labelV: 0, bubble: null,
+      pending: null, pendingTxt: '', undoV: 0, pre: null,
+      log: log
+    };
+  }
+
+  componentDidMount() { if (this.state.toast) this.autoHide(this.state.toastV); }
+  componentWillUnmount() { this.clearAll(); if (this.raf) cancelAnimationFrame(this.raf); }
+  componentDidUpdate() {
+    const s = this.state;
+    if (!this.raf && (s.dPot !== this.potTotal(s) || s.dStack !== s.me.stack)) this.raf = requestAnimationFrame(this.tick);
+  }
+  tick = () => {
+    this.raf = null;
+    const s = this.state;
+    const step = function (d, t) { const n = d + (t - d) * 0.18; return Math.abs(t - n) < 0.5 ? t : n; };
+    this.setState({ dPot: step(s.dPot, this.potTotal(s)), dStack: step(s.dStack, s.me.stack) });
+  };
+  clearAll() { this.timers.forEach(clearTimeout); this.timers = []; clearTimeout(this.undoT); clearTimeout(this.holdT); }
+  later(ms, fn) { const id = setTimeout(fn, ms); this.timers.push(id); return id; }
+  potTotal(st) { return st.pot + st.me.bet + st.seats.reduce(function (a, x) { return a + x.bet; }, 0); }
+  maxBet(st) { st = st || this.state; return Math.max.apply(null, [st.me.bet].concat(st.seats.map(function (x) { return x.bet; }))); }
+  toast(msg) { const v = this.state.toastV + 1; this.setState({ toast: msg, toastV: v }); this.autoHide(v); }
+  autoHide(v) { this.later(2800, () => { if (this.state.toastV === v) this.setState({ toast: '' }); }); }
+  turnMsg(st) {
+    st = st || this.state;
+    const mb = this.maxBet(st);
+    const i = st.seats.findIndex(function (x) { return mb > 0 && x.bet === mb; });
+    if (mb > st.me.bet && i >= 0) return PEOPLE[i].name + (st.street === 0 ? ' raised to ' : ' bet ') + fmt(mb) + '. Your move.';
+    return 'Checked to you. Your move.';
+  }
+
+  seatAct(i, act, amt) {
+    this.setState((st) => {
+      const seats = st.seats.map(function (x) { return Object.assign({}, x); });
+      const p = seats[i]; const mb = this.maxBet(st);
+      const e = { k: 'act', who: i, ago: 'now' };
+      if (act === 'fold') { p.folded = true; p.act = 'Fold'; e.verb = 'folded'; }
+      else if (act === 'check') { p.act = 'Check'; e.verb = 'checked'; }
+      else if (act === 'call') { const pay = Math.min(mb - p.bet, p.stack); p.bet += pay; p.stack -= pay; p.act = 'Call ' + fmt(p.bet); e.verb = 'called'; e.amt = p.bet; }
+      else { const pay = Math.min(amt - p.bet, p.stack); p.bet += pay; p.stack -= pay; p.act = 'Bet ' + fmt(p.bet); e.verb = 'bet'; e.amt = p.bet; }
+      p.actV += 1;
+      return { seats: seats, log: st.log.concat([e]) };
+    });
+  }
+
+  runQueue(steps, done) {
+    let k = 0;
+    const step = () => {
+      while (k < steps.length && this.state.seats[steps[k][0]].folded) k++;
+      if (k >= steps.length) { this.setState({ active: -1 }); this.later(240, done); return; }
+      const s = steps[k++];
+      this.setState({ active: s[0] });
+      this.later(620, () => { this.seatAct(s[0], s[1], s[2]); this.later(220, step); });
+    };
+    step();
+  }
+
+  act(kind, total) {
+    const s = this.state;
+    if (s.phase !== 'me') return;
+    const mb = this.maxBet(s); const toCall = mb - s.me.bet;
+    let txt = 'Checked';
+    if (kind === 'fold') txt = 'Folded';
+    else if (kind === 'call') txt = 'Called ' + fmt(Math.min(toCall, s.me.stack));
+    else if (kind === 'raise') txt = (mb > 0 ? 'Raised to ' : 'Bet ') + fmt(total);
+    this.setState({ phase: 'undo', pending: { kind: kind, total: total }, pendingTxt: txt + ' · sending', undoV: s.undoV + 1, sheet: false, holding: false });
+    clearTimeout(this.undoT);
+    this.undoT = setTimeout(() => this.commit(), 5000);
+  }
+
+  commit() {
+    const s = this.state; const p = s.pending;
+    if (!p || s.phase !== 'undo') return;
+    if (p.kind === 'fold') {
+      this.setState((st) => ({ me: Object.assign({}, st.me, { folded: true }), phase: 'busy', active: -1, pending: null, pre: null, log: st.log.concat([{ k: 'act', who: 5, verb: 'folded', ago: 'now' }]) }));
+      this.later(380, () => this.collect(() => {
+        const i = this.state.seats.findIndex(function (x) { return !x.folded; });
+        this.toast(PEOPLE[i].name + ' takes the pot.');
+        this.award(i);
+      }));
+      return;
+    }
+    this.setState((st) => {
+      const me = Object.assign({}, st.me); const mb = this.maxBet(st);
+      const e = { k: 'act', who: 5, verb: 'checked', ago: 'now' };
+      if (p.kind === 'call') { const pay = Math.min(mb - me.bet, me.stack); me.bet += pay; me.stack -= pay; e.verb = 'called'; e.amt = me.bet; }
+      else if (p.kind === 'raise') { const pay = Math.min(p.total - me.bet, me.stack); me.bet += pay; me.stack -= pay; e.verb = mb > 0 ? 'raised to' : 'bet'; e.amt = me.bet; }
+      return { me: me, phase: 'busy', active: -1, pending: null, log: st.log.concat([e]) };
+    });
+    const plan = RESP[s.street][p.kind === 'raise' ? 'a' : 'p'];
+    this.later(320, () => this.runQueue(plan, () => this.endStreet()));
+  }
+
+  myTurn() {
+    const s = this.state;
+    const pre = s.pre;
+    const toCall = this.maxBet(s) - s.me.bet;
+    this.setState({ phase: 'me', active: 5, pre: null });
+    if (!pre) { this.toast(this.turnMsg(s)); return; }
+    if (pre === 'check' && toCall > 0) { this.toast('Auto-check skipped. ' + this.turnMsg(s)); return; }
+    const kind = pre === 'callany' ? (toCall > 0 ? 'call' : 'check') : (toCall > 0 ? 'fold' : 'check');
+    this.toast('Auto-' + (kind === 'call' ? 'called' : kind === 'fold' ? 'folded' : 'checked') + '. Undo if you changed your mind.');
+    this.later(300, () => this.act(kind));
+  }
+
+  collect(next) {
+    this.setState({ collecting: true });
+    this.later(460, () => {
+      this.setState((s) => {
+        const sum = s.me.bet + s.seats.reduce(function (a, x) { return a + x.bet; }, 0);
+        return { collecting: false, pot: s.pot + sum, me: Object.assign({}, s.me, { bet: 0 }), seats: s.seats.map(function (x) { return Object.assign({}, x, { bet: 0 }); }) };
+      });
+      this.later(140, next);
+    });
+  }
+
+  endStreet() {
+    this.collect(() => {
+      const st = this.state;
+      if (st.seats.every(function (x) { return x.folded; })) { this.toast('Everyone folded. Pot’s yours.'); this.award(5); return; }
+      if (st.street === 3) { this.showdown(); return; }
+      const ns = st.street + 1;
+      const rev = [0, 3, 4, 5][ns];
+      this.setState((s) => ({
+        street: ns, revealed: rev, labelV: s.labelV + 1,
+        seats: s.seats.map(function (x) { return Object.assign({}, x, { act: '' }); }),
+        log: s.log.concat([{ k: 'board', street: ['', 'Flop', 'Turn', 'River'][ns], cards: BOARD.slice(s.revealed, rev) }])
+      }));
+      this.later(ns === 1 ? 820 : 560, () => this.runQueue(OPEN[ns], () => this.myTurn()));
+    });
+  }
+
+  showdown() {
+    this.setState((s) => ({ street: 4, active: -1, seats: s.seats.map(function (x) { return x.folded ? x : Object.assign({}, x, { face: true }); }) }));
+    this.later(700, () => {
+      const st = this.state;
+      let win = 5; let res = best(MINE.concat(BOARD));
+      const seats = st.seats.map(function (x) { return Object.assign({}, x); });
+      seats.forEach(function (x, i) {
+        if (x.folded) return;
+        const r = best(HANDS[i].concat(BOARD));
+        x.act = labelOf(r); x.actV += 1;
+        if (cmp(r, res) > 0) { win = i; res = r; }
+      });
+      const t = labelOf(res);
+      this.setState((s) => ({ winSet: res.ids, seats: seats, log: s.log.concat([{ k: 'result', who: win, amt: s.pot, hand: t, shown: win === 5 ? MINE : HANDS[win] }]) }));
+      this.toast(win === 5 ? t + '. You win ' + fmt(st.pot) + '.' : PEOPLE[win].name + ' wins with ' + t + '.');
+      this.later(1200, () => this.award(win));
+    });
+  }
+
+  award(i) {
+    this.setState({ potTo: i, bubble: { who: i } });
+    this.later(3000, () => this.setState({ bubble: null }));
+    this.later(560, () => {
+      this.setState((s) => {
+        const amt = s.pot;
+        const out = { pot: 0, dPot: 0, potTo: -2, phase: 'done', active: -1, pre: null };
+        if (i === 5) out.me = Object.assign({}, s.me, { stack: s.me.stack + amt });
+        else out.seats = s.seats.map(function (x, k) { return k === i ? Object.assign({}, x, { stack: x.stack + amt }) : x; });
+        if (!s.winSet) out.log = s.log.concat([{ k: 'result', who: i, amt: amt }]);
+        return out;
+      });
+    });
+  }
+
+  onCall = () => { const s = this.state; this.act(this.maxBet(s) > s.me.bet ? 'call' : 'check'); };
+  onFold = () => this.act('fold');
+  onUndo = () => { if (this.state.phase !== 'undo') return; clearTimeout(this.undoT); this.setState({ phase: 'me', pending: null }); };
+  minRaise() { const s = this.state; const mb = this.maxBet(); return Math.min(mb > 0 ? mb * 2 : 4, s.me.stack + s.me.bet); }
+  openRaise = () => { if (this.state.phase !== 'me') return; this.setState({ sheet: true, raiseTo: this.minRaise() }); };
+  closeSheet = () => { clearTimeout(this.holdT); this.setState({ sheet: false, holding: false }); };
+  onSlide = (e) => this.setState({ raiseTo: Number(e.target.value) });
+  dec = () => { const m = this.minRaise(); this.setState((s) => ({ raiseTo: Math.max(m, s.raiseTo - 2) })); };
+  inc = () => { const s = this.state; const mx = s.me.stack + s.me.bet; this.setState((st) => ({ raiseTo: Math.min(mx, st.raiseTo + 2) })); };
+  confirmRaise = () => this.act('raise', this.state.raiseTo);
+  holdStart = () => {
+    if (this.state.holding) return;
+    this.setState({ holding: true });
+    clearTimeout(this.holdT);
+    this.holdT = setTimeout(() => { this.setState({ holding: false }); this.act('raise', this.state.raiseTo); }, 850);
+  };
+  holdEnd = () => { if (!this.state.holding) return; clearTimeout(this.holdT); this.setState({ holding: false }); };
+  holdKey = (e) => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); this.holdStart(); } };
+  openRanks = () => this.setState({ ranksOpen: true });
+  closeRanks = () => this.setState({ ranksOpen: false });
+  openInfo = () => this.setState({ infoOpen: true });
+  closeInfo = () => this.setState({ infoOpen: false });
+  openRecap = () => this.setState({ recapOpen: true });
+  closeRecap = () => { const s = this.state; this.setState({ recapOpen: false }); if (s.phase === 'me') this.toast(this.turnMsg(s)); };
+  next = () => {
+    this.clearAll();
+    const st = this.state; const broke = st.me.stack <= 0; const hn = st.handNo + 1;
+    // anyone who busted takes the free rebuy before the next deal
+    const busted = st.seats.map(function (x, i) { return x.stack <= 0 ? i : -1; }).filter(function (i) { return i >= 0; });
+    const log = st.log.concat([
+      { k: 'hand', title: 'Hand #' + hn }
+    ], busted.map(function (i) { return { k: 'act', who: i, verb: 'rebought', amt: 200, ago: 'now' }; }), [
+      { k: 'act', who: 0, verb: 'posted', amt: 1, ago: 'now' },
+      { k: 'act', who: 2, verb: 'posted', amt: 2, ago: 'now' },
+      { k: 'act', who: 4, verb: 'raised to', amt: 6, ago: 'now' }
+    ]);
+    const f = this.fresh(hn, broke ? 200 : st.me.stack, false, log, st.seats);
+    f.dStack = st.dStack; f.toastV = st.toastV + 1;
+    if (busted.length) f.toast = PEOPLE[busted[0]].name + ' busted and rebought. Be safe, buddy.';
+    this.setState(f);
+    this.autoHide(f.toastV);
+  };
+
+  renderVals() {
+    const st = this.state, P = this.props;
+    const accent = P.accent ?? '#FF5B2E';
+    const dark = P.dark ?? false;
+    const SC = (P.fourColor ?? false) ? FOUR_COLOR : TWO_COLOR;
+    const mb = this.maxBet();
+    const toCall = Math.max(0, mb - st.me.bet);
+    const W = st.winSet;
+    const mini = function (id) { const c = parse(id); return { rank: RN[c.v], suit: SUIT[c.s], color: SC[c.s] }; };
+    const cv = function (id, delay) {
+      const c = parse(id); const inW = !W || W.indexOf(id) >= 0;
+      return { rank: RN[c.v], suit: SUIT[c.s], color: SC[c.s], delay: delay + 'ms', op: inW ? 1 : 0.28, lift: W && inW ? -8 : 0 };
+    };
+    const blank = { rank: '', suit: '', color: '#15181D', delay: '0ms', op: 1, lift: 0 };
+    const cw = L.card[0], ch = L.card[1];
+    const bsz = { w: cw, h: ch, r: Math.round(cw * 0.19), pad: Math.round(cw * 0.12), padT: Math.round(ch * 0.055), padB: Math.round(ch * 0.04), rkF: Math.round(ch * 0.22), stF: Math.round(ch * 0.165), bgF: Math.round(ch * 0.33) };
+    const board = [0, 1, 2, 3, 4].map(function (i) {
+      if (i >= st.revealed) return Object.assign({ shown: false }, bsz, blank);
+      return Object.assign({ shown: true }, bsz, cv(BOARD[i], i < 3 ? i * 110 : 0));
+    });
+    const mw = L.mine[0], mh = L.mine[1];
+    const mine = MINE.map(function (id, i) {
+      const v = cv(id, i * 120);
+      return Object.assign({}, v, {
+        w: mw, h: mh, r: Math.round(mw * 0.165), pad: Math.round(mw * 0.116), padT: Math.round(mh * 0.066), padB: Math.round(mh * 0.05),
+        rkF: Math.round(mh * 0.215), stF: Math.round(mh * 0.15), bgF: Math.round(mh * 0.35),
+        rot: i === 0 ? -5 : 5, ml: i === 0 ? 0 : -Math.round(mw * 0.16), y: st.me.folded ? 16 : v.lift, op: st.me.folded ? 0.32 : v.op
+      });
+    });
+    const shownCards = MINE.concat(BOARD.slice(0, st.revealed));
+    let lab = shownCards.length >= 5 ? labelOf(best(shownCards)) : (parse(MINE[0]).v === parse(MINE[1]).v ? 'Pair' : 'High Card');
+    if (st.me.folded) lab = 'Folded';
+
+    const av = L.av;
+    const rr = av / 2 + 4.5, rC = 2 * Math.PI * rr;
+    const seats = st.seats.map(function (p, i) {
+      const Pp = PEOPLE[i], o = L.seatPos[i];
+      const active = st.active === i;
+      // losing hands stay readable at showdown; only the board dims hard
+      const fc = p.face ? HANDS[i].map(function (id) { const f = cv(id, 0); f.op = f.op < 1 ? 0.6 : 1; return f; }) : [blank, blank];
+      return {
+        left: o.x - L.seatW / 2, top: o.y - av / 2, w: L.seatW, gap: L.seatGap, av: av, avF: Math.round(av * 0.34), nameF: L.nameF, stackF: L.stackF,
+        name: Pp.name, ini: Pp.ini, hex: Pp.hex, stackTxt: fmt(p.stack), op: p.folded ? 0.38 : 1,
+        active: active, rs: av + 12, rc: (av + 12) / 2, rr: rr, rC: rC.toFixed(1), rOff: (rC * (1 - Pp.pct)).toFixed(1), timeTxt: Pp.time + ' left',
+        hasBadge: !!Pp.badge, badge: Pp.badge, badgeBg: Pp.badge ? BADGES[Pp.badge].bg : '', badgeFg: Pp.badge ? BADGES[Pp.badge].fg : '', badgeSh: Pp.badge ? BADGES[Pp.badge].sh : '',
+        backs: !p.folded && !p.face, bkR: -Math.round(av * 0.27), bkT: -Math.round(av * 0.15), bkW: Math.round(av * 0.33), bkH: Math.round(av * 0.46), bk2: Math.round(av * 0.17), bkI: Math.round(av * 0.21), bkBox: Math.round(av * 0.56),
+        faces: p.face && !p.folded, f1: fc[0], f2: fc[1],
+        actA: !active && !!p.act && p.actV % 2 === 0, actB: !active && !!p.act && p.actV % 2 === 1, act: p.act,
+        hasBet: p.bet > 0, betTxt: fmt(p.bet), stack: stackOf(p.bet), chipX: o.cx, chipY: o.cy,
+        chipTr: st.collecting ? 'translate(-50%, -50%) translate(' + (L.CX - o.cx) + 'px, ' + (L.CY - o.cy) + 'px) scale(.5)' : 'translate(-50%, -50%)',
+        chipO: st.collecting ? 0 : 1
+      };
+    });
+
+    let potTr = 'none';
+    if (st.potTo === 5) potTr = 'translate(0px, ' + (L.mineT + 30 - L.CY) + 'px) scale(.55)';
+    else if (st.potTo >= 0) potTr = 'translate(' + (L.seatPos[st.potTo].x - L.CX) + 'px, ' + (L.seatPos[st.potTo].y - L.CY) + 'px) scale(.55)';
+
+    const maxR = st.me.stack + st.me.bet;
+    const minR = this.minRaise();
+    const potTotal = st.pot + st.me.bet + st.seats.reduce(function (a, x) { return a + x.bet; }, 0);
+    const clamp = function (v) { return Math.max(minR, Math.min(maxR, v)); };
+    const presets = [
+      { label: 'Min', amt: minR },
+      { label: '½ Pot', amt: clamp(mb + Math.round((potTotal + toCall) / 2)) },
+      { label: 'Pot', amt: clamp(mb + potTotal + toCall) },
+      { label: 'All-in', amt: maxR }
+    ].map((x) => Object.assign({}, x, { amtTxt: fmt(x.amt), pick: () => this.setState({ raiseTo: x.amt }), cls: x.amt === st.raiseTo ? 'btn inset' : 'btn neu-sm' }));
+    let rest = st.raiseTo;
+    const towers = DENOMS.map(function (d, ti) {
+      const n = Math.floor(rest / d.v); rest -= n * d.v;
+      const chips = [];
+      for (let k = 0; k < n; k++) chips.push({ delay: (ti * 50 + k * 45) + 'ms' });
+      return Object.assign(chipPaint(d), { chips: chips, op: n ? 1 : 0.45, label: n ? n + '×$' + d.v : '$' + d.v });
+    });
+
+    const live = st.phase !== 'done';
+    const showPre = st.phase === 'busy' && !st.me.folded && st.street < 4;
+    const showFolded = st.me.folded && live;
+    const showWait = st.phase === 'busy' && !showPre;
+    let waitTxt = 'Dealing';
+    if (st.me.folded) waitTxt = 'You folded · next hand soon';
+    else if (st.street === 4) waitTxt = 'Showdown';
+    let plateStatus = '11h 42m left';
+    if (st.phase === 'undo') plateStatus = 'Sending in 5s';
+    else if (st.phase === 'busy') plateStatus = st.me.folded ? 'Folded' : (st.active >= 0 && st.active < 5 ? 'Waiting on ' + PEOPLE[st.active].name : (st.street === 4 ? 'Showdown' : 'Dealing'));
+    else if (st.phase === 'done') plateStatus = 'Hand over';
+
+    const rows = HISTORY.concat(st.log);
+    if (st.phase === 'me') rows.push({ k: 'turn' });
+    const feed = rows.map(function (e, i) {
+      const who = e.who === undefined ? null : (e.who === 5 ? ME : PEOPLE[e.who]);
+      const isCur = e.k === 'hand' && e.title === 'Hand #' + st.handNo;
+      return {
+        delay: (i < HISTORY.length ? i * 40 : 0) + 'ms',
+        isAway: e.k === 'away', isHand: e.k === 'hand', isAct: e.k === 'act', isBoard: e.k === 'board', isResult: e.k === 'result', isTurn: e.k === 'turn',
+        title: e.title || '', note: e.k === 'hand' ? (isCur && live ? 'live' : 'finished') : '',
+        who: who ? who.name : '', ini: who ? who.ini : '', hex: who ? who.hex : 'transparent',
+        verb: e.verb || '', amt: e.amt ? fmt(e.amt) : '', hasTag: !!e.tag, tag: e.tag || '', ago: e.ago || '',
+        street: e.street || '', cards: (e.cards || []).map(mini),
+        hand: e.hand || '', hasHand: !!e.hand, shown: (e.shown || []).map(mini), hasShown: !!(e.shown && e.shown.length),
+        turnTxt: toCall > 0 ? fmt(Math.min(toCall, st.me.stack)) + ' to call' : 'check or bet'
+      };
+    });
+
+    const lastRes = st.phase === 'done' ? st.log.filter(function (e) { return e.k === 'result'; }).pop() : null;
+    const meStatus = lastRes && lastRes.who === 5 ? 'Won ' + fmt(lastRes.amt) : st.phase === 'done' ? 'Hand over' : st.me.folded ? 'Folded' : (st.phase === 'me' ? 'Your turn · 11h 42m' : (st.phase === 'undo' ? 'Sending…' : 'Waiting'));
+    const roster = [{ name: 'You', ini: ME.ini, hex: ME.hex, status: meStatus, stack: fmt(st.me.stack), op: st.me.folded ? 0.5 : 1 }]
+      .concat(st.seats.map(function (p, i) {
+        const Pp = PEOPLE[i];
+        const status = st.active === i ? 'Thinking · ' + Pp.time + ' left' : (p.folded ? 'Folded' : (p.act || 'Waiting'));
+        return { name: Pp.name, ini: Pp.ini, hex: Pp.hex, status: status, stack: fmt(p.stack), op: p.folded ? 0.5 : 1 };
+      }))
+      .map(function (r, i) { return Object.assign(r, { border: i ? '1px solid var(--line)' : 'none' }); });
+
+    const bub = st.bubble;
+    let bubbleL = L.cx - 125, bubbleT = L.labelT - 70;
+    if (bub && bub.who !== 5) {
+      const o = L.seatPos[bub.who];
+      bubbleL = Math.max(L.col[0] + 8, Math.min(L.col[0] + L.col[1] - 258, o.x - 125));
+      bubbleT = o.y + av / 2 + 40;
+    }
+
+    const holdLabel = st.holding ? 'Keep holding…' : 'Hold for all-in ' + fmt(maxR);
+    const fx = L.felt;
+
+    return {
+      themeCls: dark ? 't-dark' : 't-light', accent: accent, W: L.W, H: L.H, pad: L.pad, topW: L.W - 2 * L.pad, handNo: st.handNo,
+      showHistoryBtn: !L.rr, openRecap: this.openRecap,
+      hasLeftRail: !!L.lr, lrL: L.lr ? L.lr[0] : 0, lrT: L.lr ? L.lr[1] : 0, lrW: L.lr ? L.lr[2] : 0, lrH: L.lr ? L.lr[3] : 0,
+      hasRightRail: !!L.rr, rrL: L.rr ? L.rr[0] : 0, rrT: L.rr ? L.rr[1] : 0, rrW: L.rr ? L.rr[2] : 0, rrH: L.rr ? L.rr[3] : 0,
+      roster: roster, feed: feed,
+      fL: fx[0], fT: fx[1], fW: fx[2], fH: fx[3], fR: fx[3] / 2,
+      flL: fx[0] + 16, flT: fx[1] + 16, flW: fx[2] - 32, flH: fx[3] - 32, flR: fx[3] / 2 - 16,
+      colL: L.col[0], colW: L.col[1], cx: L.cx, boardT: L.boardT, cGap: L.card[2], board: board,
+      potShown: st.phase !== 'done', potT: L.potT, potTxt: fmt(st.dPot), potTr: potTr, potO: st.potTo === -2 ? 1 : 0,
+      showToCall: st.phase === 'me' && toCall > 0, toCallT: L.toCallT, toCallTxt: fmt(Math.min(toCall, st.me.stack)),
+      seats: seats,
+      meHasBet: st.me.bet > 0, myChipY: L.myChipY, meBetTxt: fmt(st.me.bet), meStack: stackOf(st.me.bet),
+      meChipTr: st.collecting ? 'translate(-50%, -50%) translate(0px, ' + (L.CY - L.myChipY) + 'px) scale(.5)' : 'translate(-50%, -50%)', meChipO: st.collecting ? 0 : 1,
+      labelA: st.labelV % 2 === 0, labelB: st.labelV % 2 === 1, labelT: L.labelT, labelTitle: lab, labelAria: lab + '. Show hand rankings', openRanks: this.openRanks,
+      mine: mine, mineT: L.mineT,
+      plateT: L.plateT, meActive: st.phase === 'me' || st.phase === 'undo', meRingOff: (128.8 * 0.025).toFixed(1), stackTxt: fmt(st.dStack), plateStatus: plateStatus, openInfo: this.openInfo,
+      barL: L.bar[0], barT: L.bar[1], barW: L.bar[2], barH: L.bar[3],
+      showActions: st.phase === 'me', canRaise: maxR > mb, barCols: maxR > mb ? '1fr 1.25fr 1fr' : '1fr 1.25fr',
+      onFold: this.onFold, onCall: this.onCall, openRaise: this.openRaise,
+      callLabel: toCall > 0 ? 'Call ' + fmt(Math.min(toCall, st.me.stack)) : 'Check', raiseLabel: mb > 0 ? 'Raise' : 'Bet',
+      undoA: st.phase === 'undo' && st.undoV % 2 === 0, undoB: st.phase === 'undo' && st.undoV % 2 === 1, pendingTxt: st.pendingTxt, onUndo: this.onUndo,
+      showPre: showPre,
+      preOpts: PRE.map((o) => ({
+        label: o.label, on: st.pre === o.id, cls: st.pre === o.id ? 'btn inset pre' : 'btn neu-sm pre', dot: st.pre === o.id ? accent : 'var(--line)',
+        pick: () => this.setState((s) => ({ pre: s.pre === o.id ? null : o.id }))
+      })),
+      showWait: showWait || (showFolded && st.phase !== 'busy'), waitTxt: waitTxt,
+      done: st.phase === 'done', doneOk: st.phase === 'done' && st.me.stack > 0, doneBroke: st.phase === 'done' && st.me.stack <= 0, next: this.next,
+      hasBubble: !!bub, bubbleL: bubbleL, bubbleT: bubbleT,
+      bubbleText: bub ? (bub.who === 5 ? ME.phrase : PEOPLE[bub.who].phrase) : '',
+      bubbleWho: bub ? (bub.who === 5 ? 'You' : PEOPLE[bub.who].name) : '',
+      bubbleHex: bub ? (bub.who === 5 ? ME.hex : PEOPLE[bub.who].hex) : 'transparent',
+      toastA: !!st.toast && st.toastV % 2 === 0, toastB: !!st.toast && st.toastV % 2 === 1, toastTxt: st.toast, toastL: L.col[0] + 14, toastW: L.col[1] - 28, toastIW: L.wide ? 'auto' : '100%',
+      sheetL: L.col[0] + (L.col[1] - L.sheetW) / 2, sheetW: L.sheetW, recapH: L.recapH,
+      sheet: st.sheet, closeSheet: this.closeSheet, sheetTitle: mb > 0 ? 'Raise to' : 'Bet', raiseTo: st.raiseTo, raiseTxt: fmt(st.raiseTo), maxRTxt: fmt(maxR), minR: minR, maxR: maxR,
+      onSlide: this.onSlide, dec: this.dec, inc: this.inc, atMinR: st.raiseTo <= minR, atMaxR: st.raiseTo >= maxR,
+      towers: towers, presets: presets,
+      notAllIn: st.raiseTo < maxR, isAllIn: st.raiseTo >= maxR, confirmLabel: (mb > 0 ? 'Raise to ' : 'Bet ') + fmt(st.raiseTo), confirmRaise: this.confirmRaise,
+      holdStart: this.holdStart, holdEnd: this.holdEnd, holdKey: this.holdKey, holdLabel: holdLabel,
+      holdW: st.holding ? '100%' : '0%', holdTr: st.holding ? 'width 850ms linear' : 'width 180ms ease',
+      ranksOpen: st.ranksOpen, closeRanks: this.closeRanks,
+      ranks: RANKS.map(function (r, i) {
+        const isMine = r[0] === lab;
+        return { n: i + 1, name: r[0], mine: isMine, delay: (60 + i * 35) + 'ms', cls: isMine ? 'inset rowIn' : 'rowIn', cards: r[1].map(mini) };
+      }),
+      infoOpen: st.infoOpen, closeInfo: this.closeInfo,
+      denoms: DENOMS.slice().reverse().map(function (d) { return { color: d.color, cls: d.light ? 'dchip light' : 'dchip', label: '$' + d.v }; }),
+      rules: [
+        { k: 'Blinds', v: '$1 / $2' }, { k: 'Buy-in', v: '$200, free' }, { k: 'Min raise', v: '2× the bet' },
+        { k: 'Turn timer', v: '12h, then auto check/fold' }, { k: 'Missed turns', v: 'Sat out after 2' }, { k: 'Rebuys', v: 'Free, unlimited' }
+      ].map(function (u, i) { return Object.assign(u, { border: i ? '1px solid var(--line)' : 'none' }); }),
+      awayTiles: [{ k: 'Stack', v: fmt(st.me.stack) }, { k: 'Away', v: '22h' }, { k: 'Missed', v: '1 turn' }],
+      recapOpen: st.recapOpen, closeRecap: this.closeRecap, recapCta: st.phase === 'me' ? 'Take your turn' : 'Back to the table'
+    };
+  }
+}
+</script>
+</body>
+</html>

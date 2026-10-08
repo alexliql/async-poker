@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Host a table</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Geist+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.t-light{--bg:#E3E6EB;--fg:#15181D;--muted:#575E6C;--sd:rgba(146,155,171,.55);--sl:rgba(255,255,255,.95);--line:rgba(21,24,29,.07)}
+.t-dark{--bg:#1D2025;--fg:#ECEEF2;--muted:#9AA1AD;--sd:rgba(0,0,0,.55);--sl:rgba(255,255,255,.05);--line:rgba(255,255,255,.06)}
+.neu{background:var(--bg);box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl)}
+.neu-sm{background:var(--bg);box-shadow:3px 3px 8px var(--sd),-3px -3px 8px var(--sl)}
+.t-light{--well:#D9DEE5}.t-dark{--well:#16191D}
+.inset{background:var(--well);box-shadow:inset 4px 4px 10px var(--sd),inset -4px -4px 10px var(--sl)}
+.mono{font-family:'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.caps{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.btn{border:0;font:inherit;color:var(--fg);cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform 140ms cubic-bezier(.3,.7,.2,1),box-shadow 160ms ease,opacity 200ms ease,background 200ms ease,color 200ms ease}
+.btn:focus-visible{outline:2.5px solid var(--fg);outline-offset:3px}
+.btn:active{transform:scale(.97);box-shadow:inset 3px 3px 8px var(--sd),inset -3px -3px 8px var(--sl)}
+.btn:disabled{cursor:default;transform:none}
+.btn:not(.swatch):disabled{opacity:1;background:var(--well)!important;color:var(--muted);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.hit{position:relative}.hit::before{content:"";position:absolute;inset:-7px;border-radius:50%}
+.accentBtn{color:#1B0F0A;box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.accentBtn:active{box-shadow:inset 3px 3px 8px rgba(0,0,0,.25)}
+.field{border:0;outline:0;font:inherit;color:var(--fg);width:100%;box-sizing:border-box}
+.field::placeholder{color:var(--muted);opacity:1}
+.field:focus{box-shadow:inset 4px 4px 10px var(--sd),inset -4px -4px 10px var(--sl),0 0 0 2px var(--fg)}
+.swatch{width:32px;height:32px;padding:0;border-radius:50%;box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.swatch.sel{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--fg)}
+.seg{height:40px;border-radius:12px;background:transparent;font-size:15px;font-weight:700;color:var(--muted)}
+.seg.on{background:var(--bg);color:var(--fg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl)}
+.seg:active{box-shadow:none}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:32px;background:transparent;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:10px;border-radius:6px;background:var(--bg);box-shadow:inset 3px 3px 6px var(--sd),inset -3px -3px 6px var(--sl)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;margin-top:-10px;border-radius:50%;background:var(--bg);box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl)}
+input[type=range]::-moz-range-track{height:10px;border-radius:6px;background:var(--bg);box-shadow:inset 3px 3px 6px var(--sd),inset -3px -3px 6px var(--sl)}
+input[type=range]::-moz-range-thumb{width:30px;height:30px;border:0;border-radius:50%;background:var(--bg);box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl)}
+.t-light{--back:#2A2F38}.t-dark{--back:#3A404B}
+.cback{position:relative;border-radius:7px;background:var(--back);color:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;box-shadow:4px 6px 12px var(--sd),-2px -2px 6px var(--sl)}
+.cframe{position:absolute;inset:4px;border-radius:4px;border:1px solid rgba(255,255,255,.18)}
+@keyframes dealIn{0%{transform:translateY(-28px) scale(.85);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+.dealIn{animation:dealIn 520ms cubic-bezier(.2,1.3,.35,1) both}
+@keyframes pop{0%{transform:translateY(10px) scale(.94);opacity:0}100%{transform:none;opacity:1}}
+@keyframes swap{0%{transform:translateY(6px);opacity:0}100%{transform:none;opacity:1}}
+.pop{animation:pop 380ms cubic-bezier(.2,1.3,.4,1) both}
+.swap{animation:swap 260ms cubic-bezier(.2,1.2,.4,1) both}
+@media (prefers-reduced-motion:reduce){*{animation-duration:1ms !important;transition-duration:1ms !important}}
+</style>
+</helmet>
+<div class="{{themeCls}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; padding: 26px 24px 24px; background: var(--bg); color: var(--fg); font-family: 'Bricolage Grotesque', system-ui, sans-serif; display: flex; flex-direction: column; gap: 16px">
+
+  <div aria-hidden="true" style="align-self: center; position: relative; width: 70px; height: 58px; flex: none">
+    <div style="position: absolute; left: 2px; top: 6px; transform: rotate(-11deg)">
+      <div class="cback dealIn" style="width: 36px; height: 50px; animation-delay: 120ms">
+        <div class="cframe"></div>
+        <svg width="20" height="20" viewBox="0.8 1.75 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="16" r="4.5"></circle><path d="M9 11.5V8.5"></path><path d="M6.5 8.5a2.5 2.5 0 0 1 5 0z"></path><path d="M11.2 7.4l7.3 5.1"></path><path d="M18.5 12.5v1.4"></path><circle cx="18.5" cy="16.5" r="2.6"></circle><path d="M5 21.5h8"></path></svg>
+      </div>
+    </div>
+    <div style="position: absolute; left: 32px; top: 0; transform: rotate(9deg)">
+      <div class="cback dealIn" style="width: 36px; height: 50px; animation-delay: 240ms">
+        <div class="cframe"></div>
+        <svg width="20" height="20" viewBox="0.8 1.75 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="16" r="4.5"></circle><path d="M9 11.5V8.5"></path><path d="M6.5 8.5a2.5 2.5 0 0 1 5 0z"></path><path d="M11.2 7.4l7.3 5.1"></path><path d="M18.5 12.5v1.4"></path><circle cx="18.5" cy="16.5" r="2.6"></circle><path d="M5 21.5h8"></path></svg>
+      </div>
+    </div>
+  </div>
+
+  <h1 style="margin: 0; font-size: 44px; line-height: 0.98; font-weight: 800; letter-spacing: -0.04em">Host a table</h1>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <label for="table-name" class="caps">Table name</label>
+    <input id="table-name" class="field inset" type="text" maxlength="24" value="{{tableName}}" onChange="{{onTable}}" style="height: 54px; padding: 0 18px; border-radius: 18px; font-size: 17px; font-weight: 700">
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <label for="host-name" class="caps">You’ll sit as</label>
+    <div style="position: relative">
+      <input id="host-name" class="field inset" type="text" maxlength="16" autocomplete="nickname" placeholder="Your name" value="{{name}}" onChange="{{onName}}" style="height: 54px; padding: 0 60px 0 18px; border-radius: 18px; font-size: 17px; font-weight: 700">
+      <button class="btn swatch hit" aria-label="Choose your color" aria-expanded="{{pickOpen}}" onClick="{{togglePick}}" style="position: absolute; right: 11px; top: 11px; background: {{yourHex}}"></button>
+    </div>
+    <sc-if value="{{pickOpen}}" hint-placeholder-val="{{ false }}">
+      <div class="pop" style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); justify-items: center; gap: 4px; padding: 8px 0 2px">
+        <sc-for list="{{palette}}" as="c" hint-placeholder-count="8">
+          <button class="{{c.cls}}" aria-label="{{c.label}}" onClick="{{c.pick}}" style="background: {{c.hex}}"></button>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <label for="host-catch" class="caps">Catchphrase</label>
+    <input id="host-catch" class="field inset" type="text" maxlength="40" placeholder="Mia never bluffs. Mostly." value="{{phrase}}" onChange="{{onPhrase}}" style="height: 54px; padding: 0 18px; border-radius: 18px; font-size: 16px">
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+    <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+      <span class="caps">Blinds</span>
+      <div class="inset" role="group" aria-label="Blinds" style="border-radius: 16px; padding: 4px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px">
+        <sc-for list="{{blinds}}" as="o" hint-placeholder-count="3">
+          <button class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}" style="font-size: 13px; padding: 0">{{o.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+      <span class="caps">Starting stack</span>
+      <div class="inset" role="group" aria-label="Starting stack" style="border-radius: 16px; padding: 4px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px">
+        <sc-for list="{{stacks}}" as="o" hint-placeholder-count="3">
+          <button class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}" style="font-size: 13px; padding: 0">{{o.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <span class="caps">Turn timer</span>
+    <div class="inset" role="group" aria-label="Turn timer" style="border-radius: 16px; padding: 4px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px">
+      <sc-for list="{{timers}}" as="o" hint-placeholder-count="5">
+        <button class="{{o.cls}}" aria-pressed="{{o.on}}" aria-label="{{o.long}}" onClick="{{o.pick}}" style="padding: 0">{{o.label}}</button>
+      </sc-for>
+    </div>
+    <sc-if value="{{hintA}}" hint-placeholder-val="{{ true }}">
+      <span class="swap" style="font-size: 13px; color: var(--muted)">{{timerHint}}</span>
+    </sc-if>
+    <sc-if value="{{hintB}}" hint-placeholder-val="{{ false }}">
+      <span class="swap" style="font-size: 13px; color: var(--muted)">{{timerHint}}</span>
+    </sc-if>
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: space-between">
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <span class="caps">Seats</span>
+      <span style="font-size: 13px; color: var(--muted)">Up to 8 at one table</span>
+    </div>
+    <div class="inset" style="height: 50px; border-radius: 25px; padding: 0 5px; display: flex; align-items: center; gap: 4px">
+      <button class="btn neu-sm" aria-label="Fewer seats" disabled="{{atMin}}" onClick="{{dec}}" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"></path></svg>
+      </button>
+      <span class="mono" style="width: 34px; text-align: center; font-size: 19px; font-weight: 700">{{seats}}</span>
+      <button class="btn neu-sm" aria-label="More seats" disabled="{{atMax}}" onClick="{{inc}}" style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div style="flex: 1"></div>
+
+  <sc-if value="{{canCreate}}" hint-placeholder-val="{{ true }}">
+    <a href="Lobby.dc.html" class="btn accentBtn" style="height: 58px; flex: none; border-radius: 20px; font-size: 17px; font-weight: 800; background: {{accent}}; display: flex; align-items: center; justify-content: center; gap: 10px">
+      Create table
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+    </a>
+  </sc-if>
+  <sc-if value="{{cantCreate}}" hint-placeholder-val="{{ false }}">
+    <button class="btn neu" disabled="{{ true }}" style="height: 58px; flex: none; border-radius: 20px; font-size: 17px; font-weight: 800">{{missingTxt}}</button>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"accent":{"editor":"color","default":"#FF5B2E","options":["#FF5B2E","#C6F432","#5AC8FA"]},"$preview":{"width":390,"height":844}}'>
+const PALETTE = [
+  { id: 'sage', label: 'Sage', hex: '#9DB8A0' },
+  { id: 'dusk', label: 'Dusty blue', hex: '#93AAC7' },
+  { id: 'clay', label: 'Clay', hex: '#C9A08C' },
+  { id: 'mauve', label: 'Mauve', hex: '#B59BB8' },
+  { id: 'sand', label: 'Sand', hex: '#CDB98A' },
+  { id: 'teal', label: 'Sea glass', hex: '#8FB3B5' },
+  { id: 'rose', label: 'Rose', hex: '#C79A9E' },
+  { id: 'iris', label: 'Iris', hex: '#A6A3C9' }
+];
+const TIMERS = [
+  { label: '5m', long: '5 minutes', hint: 'Basically live. Good for a game night together.' },
+  { label: '30m', long: '30 minutes', hint: 'Live-ish. Fine if people step away for a bit.' },
+  { label: '1h', long: '1 hour', hint: 'Quick async. Check in between meetings.' },
+  { label: '6h', long: '6 hours', hint: 'A couple of moves a day. Missed turns auto-check or fold.' },
+  { label: '12h', long: '12 hours', hint: 'Play around your day. Missed turns auto-check or fold.' }
+];
+
+class Component extends DCLogic {
+  state = { tableName: 'Friday Night', name: 'Mia', phrase: 'Mia never bluffs. Mostly.', color: 'sage', pickOpen: false, blinds: '$1/$2', stack: '$200', timer: 4, seats: 8, hv: 0 };
+
+  onTable = (e) => this.setState({ tableName: e.target.value });
+  onName = (e) => this.setState({ name: e.target.value });
+  onPhrase = (e) => this.setState({ phrase: e.target.value });
+  togglePick = () => this.setState((s) => ({ pickOpen: !s.pickOpen }));
+  dec = () => this.setState((s) => ({ seats: Math.max(2, s.seats - 1) }));
+  inc = () => this.setState((s) => ({ seats: Math.min(8, s.seats + 1) }));
+
+  seg(values, key, extra) {
+    const s = this.state;
+    return values.map((v) => ({
+      label: v, on: s[key] === v,
+      cls: s[key] === v ? 'btn seg on' : 'btn seg',
+      pick: () => this.setState((st) => Object.assign({ [key]: v }, extra && st[key] !== v ? { hv: st.hv + 1 } : {}))
+    }));
+  }
+
+  renderVals() {
+    const s = this.state, P = this.props;
+    return {
+      themeCls: (P.dark ?? false) ? 't-dark' : 't-light',
+      accent: P.accent ?? '#FF5B2E',
+      tableName: s.tableName, onTable: this.onTable,
+      name: s.name, onName: this.onName, phrase: s.phrase || '', onPhrase: this.onPhrase,
+      yourHex: PALETTE.find((c) => c.id === s.color).hex,
+      pickOpen: s.pickOpen, togglePick: this.togglePick,
+      palette: PALETTE.map((c) => ({
+        hex: c.hex, label: c.label,
+        cls: c.id === s.color ? 'btn swatch hit sel' : 'btn swatch hit',
+        pick: () => this.setState({ color: c.id, pickOpen: false })
+      })),
+      blinds: this.seg(['$1/$2', '$2/$5', '$5/$10'], 'blinds'),
+      stacks: this.seg(['$100', '$200', '$500'], 'stack'),
+      timers: TIMERS.map((t, i) => ({
+        label: t.label, long: t.long, on: i === s.timer,
+        cls: i === s.timer ? 'btn seg on' : 'btn seg',
+        pick: () => this.setState((st) => (st.timer === i ? null : { timer: i, hv: st.hv + 1 }))
+      })),
+      timerHint: TIMERS[s.timer].hint, hintA: s.hv % 2 === 0, hintB: s.hv % 2 === 1,
+      seats: s.seats, atMin: s.seats <= 2, atMax: s.seats >= 8, dec: this.dec, inc: this.inc,
+      canCreate: !!(s.tableName.trim() && s.name.trim()), cantCreate: !(s.tableName.trim() && s.name.trim()),
+      missingTxt: !s.tableName.trim() ? 'Name your table' : 'Add your name'
+    };
+  }
+}
+</script>
+</body>
+</html>

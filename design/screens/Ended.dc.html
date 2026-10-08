@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Game over, final standings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Geist+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.t-light{--bg:#E3E6EB;--fg:#15181D;--muted:#575E6C;--sd:rgba(146,155,171,.55);--sl:rgba(255,255,255,.95);--line:rgba(21,24,29,.07);--back:#2A2F38;--well:#D9DEE5}
+.t-dark{--bg:#1D2025;--fg:#ECEEF2;--muted:#9AA1AD;--sd:rgba(0,0,0,.55);--sl:rgba(255,255,255,.05);--line:rgba(255,255,255,.07);--back:#3A404B;--well:#16191D}
+.neu{background:var(--bg);box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl)}
+.neu-sm{background:var(--bg);box-shadow:3px 3px 8px var(--sd),-3px -3px 8px var(--sl)}
+.inset{background:var(--well);box-shadow:inset 4px 4px 10px var(--sd),inset -4px -4px 10px var(--sl)}
+.mono{font-family:'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.caps{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.btn{border:0;font:inherit;color:var(--fg);cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform 140ms cubic-bezier(.3,.7,.2,1),box-shadow 160ms ease,opacity 200ms ease,background-color 200ms ease}
+.btn:active{transform:scale(.97);box-shadow:inset 3px 3px 8px var(--sd),inset -3px -3px 8px var(--sl)}
+.btn:disabled{cursor:default;transform:none}
+.btn:not(.swatch):disabled{opacity:1;background:var(--well)!important;color:var(--muted);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.hit{position:relative}.hit::before{content:"";position:absolute;inset:-7px;border-radius:50%}
+.btn:focus-visible{outline:2.5px solid var(--fg);outline-offset:3px}
+.ghost{background:transparent;padding:0}
+.ghost:active{box-shadow:none}
+.accentBtn{color:#1B0F0A;box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.accentBtn:active{box-shadow:inset 3px 3px 8px rgba(0,0,0,.25)}
+.avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;color:#15181D;font-weight:800;box-shadow:4px 4px 10px var(--sd),-4px -4px 10px var(--sl),inset 0 1px 0 rgba(255,255,255,.35)}
+.card{background:#FBFBFC;box-shadow:inset 0 1px 0 #fff,4px 6px 14px var(--sd),-2px -2px 6px var(--sl);font-variant-emoji:text}
+.mini{width:19px;height:26px;border-radius:4px;background:#FBFBFC;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;font-weight:800;font-size:11px;box-shadow:1px 2px 4px var(--sd);font-variant-emoji:text;flex:none}
+.back{background:var(--back);color:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1.5px var(--back),inset 0 0 0 2.5px rgba(255,255,255,.16),2px 2px 4px var(--sd)}
+.chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 6px;border-radius:13px;font-size:13px;font-weight:700;background:var(--bg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl);white-space:nowrap}
+.pchip{position:relative;display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--fg);flex:none;box-shadow:0 1px 2px var(--sd)}
+.pchip::after{content:'';position:absolute;inset:2px;border-radius:50%;border:1.5px dashed var(--bg)}
+.pchip.lg{width:20px;height:20px}
+.pchip.lg::after{inset:3px;border-width:2px}
+.badge{height:20px;min-width:20px;padding:0 6px;box-sizing:border-box;border-radius:10px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;background:var(--fg);color:var(--bg)}
+.tag{height:20px;padding:0 8px;border-radius:10px;font-size:11px;font-weight:700;background:var(--bg);box-shadow:2px 2px 5px var(--sd),-2px -2px 5px var(--sl);white-space:nowrap;display:flex;align-items:center}
+.tagS{height:18px;padding:0 7px;border-radius:9px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;background:var(--fg);color:var(--bg);flex:none}
+@keyframes chipIn{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes toastIn{0%{transform:translateY(-22px) scale(.96);opacity:0}100%{transform:none;opacity:1}}
+@keyframes fade{0%{opacity:0}100%{opacity:1}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.7);opacity:.55}}
+@keyframes rowIn{0%{transform:translateY(10px);opacity:0}100%{transform:none;opacity:1}}
+.chipIn{animation:chipIn 340ms cubic-bezier(.3,1.5,.5,1) both}
+.pop{animation:pop 280ms cubic-bezier(.3,1.4,.5,1) both}
+.toastIn{animation:toastIn 380ms cubic-bezier(.2,1.2,.4,1) both}
+.fade{animation:fade 220ms ease both}
+.breathe{animation:breathe 1.6s ease-in-out infinite}
+.rowIn{animation:rowIn 380ms cubic-bezier(.2,1.2,.4,1) both}
+@keyframes crown{0%{transform:translateY(6px) rotate(-14deg);opacity:0}100%{transform:rotate(-14deg);opacity:1}}
+.crown{animation:crown 520ms 200ms cubic-bezier(.2,1.4,.4,1) both}
+@media (prefers-reduced-motion:reduce){*{animation-duration:1ms !important;transition-duration:1ms !important}}
+</style>
+</helmet>
+<div class="{{themeCls}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; padding: 36px 24px 24px; background: var(--bg); color: var(--fg); font-family: 'Bricolage Grotesque', system-ui, sans-serif; display: flex; flex-direction: column; gap: 18px">
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <span class="caps">Friday Night · Mia ended the game</span>
+    <h1 style="margin: 0; font-size: 44px; line-height: 0.98; font-weight: 800; letter-spacing: -0.04em">Good game.</h1>
+    <div class="mono" style="font-size: 13px; color: var(--muted)">2 days · 41 hands · 6 players</div>
+  </div>
+
+  <div class="neu" style="border-radius: 24px; padding: 8px 10px; display: flex; flex-direction: column">
+    <div class="inset" style="border-radius: 18px; padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="position: relative">
+          <div class="avatar" style="width: 48px; height: 48px; font-size: 19px; background: {{top.hex}}">{{top.ini}}</div>
+          <svg class="crown" aria-hidden="true" width="22" height="18" viewBox="0 0 22 18" style="position: absolute; left: -9px; top: -11px"><path d="M2 15 L1 4 L7 9 L11 1 L15 9 L21 4 L20 15 Z" fill="{{accent}}" stroke="var(--fg)" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+        </div>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 19px; font-weight: 800; letter-spacing: -0.02em">{{top.name}}</span>
+          <span style="font-size: 12px; color: var(--muted)">Took the night</span>
+        </div>
+        <span class="mono" style="font-size: 24px; font-weight: 700; letter-spacing: -0.03em">{{top.netTxt}}</span>
+      </div>
+      <div style="font-size: 15px; font-weight: 700; font-style: italic; padding-left: 60px">“{{top.phrase}}”</div>
+    </div>
+    <sc-for list="{{rest}}" as="r" hint-placeholder-count="5">
+      <div style="display: flex; align-items: center; gap: 12px; height: 50px; padding: 0 12px; border-top: {{r.border}}">
+        <span class="mono" style="width: 14px; font-size: 13px; color: var(--muted)">{{r.rank}}</span>
+        <div class="avatar" style="width: 30px; height: 30px; font-size: 12px; background: {{r.hex}}">{{r.ini}}</div>
+        <span style="flex: 1; min-width: 0; font-size: 15px; font-weight: {{r.weight}}">{{r.name}}</span>
+        <sc-if value="{{r.hasRebuys}}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size: 11px; color: var(--muted)">{{r.buyTxt}}</span></sc-if>
+        <span class="mono" style="width: 64px; text-align: right; font-size: 15px; font-weight: 700; color: {{r.netColor}}">{{r.netTxt}}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+    <sc-for list="{{awards}}" as="a" hint-placeholder-count="2">
+      <div class="inset" style="border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0">
+        <span class="caps" style="font-size: 10px">{{a.k}}</span>
+        <span style="font-size: 15px; font-weight: 800; white-space: nowrap">{{a.who}} <span class="mono" style="font-weight: 600; color: var(--muted)">{{a.v}}</span></span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="flex: 1"></div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <button class="btn accentBtn" onClick="{{share}}" style="height: 58px; border-radius: 20px; font-size: 17px; font-weight: 800; background: {{accent}}; display: flex; align-items: center; justify-content: center; gap: 10px">
+      <sc-if value="{{shared}}" hint-placeholder-val="{{ false }}"><svg class="pop" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+      <span>{{shareLabel}}</span>
+    </button>
+    <a href="Create.dc.html" class="btn neu" style="height: 52px; border-radius: 18px; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center">Run it back</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"accent":{"editor":"color","default":"#FF5B2E","options":["#FF5B2E","#C6F432","#5AC8FA"]},"$preview":{"width":390,"height":844}}'>
+// nets are chips won minus chips bought in; free chips, so they always sum to $0
+const STANDINGS = [
+  { name: 'Priya', ini: 'P', hex: '#C9A08C', net: 212, buyins: 1, phrase: 'Priya saw that coming.' },
+  { name: 'Theo', ini: 'T', hex: '#CDB98A', net: 64, buyins: 1 },
+  { name: 'You', ini: 'K', hex: '#8FB3B5', net: 18, buyins: 2, you: true },
+  { name: 'Mia', ini: 'M', hex: '#9DB8A0', net: -40, buyins: 1 },
+  { name: 'Sam', ini: 'S', hex: '#B59BB8', net: -102, buyins: 2 },
+  { name: 'Jay', ini: 'J', hex: '#93AAC7', net: -152, buyins: 3 }
+];
+const money = function (n) { return (n > 0 ? '+$' : n < 0 ? '−$' : '$') + Math.abs(n); };
+
+class Component extends DCLogic {
+  state = { shared: false };
+  timers = [];
+  componentWillUnmount() { this.timers.forEach(clearTimeout); }
+  share = () => {
+    const text = 'Friday Night · final\n' + STANDINGS.map(function (p, i) { return (i + 1) + '. ' + (p.you ? 'Kai' : p.name) + ' ' + money(p.net); }).join('\n');
+    try { if (navigator.share) navigator.share({ text: text }).catch(function () {}); else if (navigator.clipboard) navigator.clipboard.writeText(text).catch(function () {}); } catch (e) {}
+    this.setState({ shared: true });
+    this.timers.push(setTimeout(() => this.setState({ shared: false }), 2400));
+  };
+
+  renderVals() {
+    const s = this.state, P = this.props;
+    const dark = P.dark ?? false;
+    const top = STANDINGS[0];
+    return {
+      themeCls: dark ? 't-dark' : 't-light',
+      accent: P.accent ?? '#FF5B2E',
+      top: { name: top.name, ini: top.ini, hex: top.hex, phrase: top.phrase, netTxt: money(top.net) },
+      rest: STANDINGS.slice(1).map(function (p, i) {
+        return {
+          rank: String(i + 2), name: p.name, ini: p.ini, hex: p.hex, weight: p.you ? 800 : 600,
+          netTxt: money(p.net), netColor: p.net < 0 ? 'var(--muted)' : 'var(--fg)',
+          hasRebuys: p.buyins > 1, buyTxt: p.buyins + ' buy-ins', border: i ? '1px solid var(--line)' : '0'
+        };
+      }),
+      awards: [{ k: 'Biggest pot', who: 'Priya', v: '$142' }, { k: 'Most rebuys', who: 'Jay', v: '×2' }],
+      shared: s.shared, shareLabel: s.shared ? 'Copied for the group chat' : 'Share to group chat',
+      share: this.share
+    };
+  }
+}
+</script>
+</body>
+</html>
