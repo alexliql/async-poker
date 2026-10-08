@@ -3,7 +3,17 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', '**/.wrangler/**', 'design/**', '**/node_modules/**', 'e2e/test-results/**', 'e2e/report/**'] },
+  {
+    ignores: [
+      '**/dist/**',
+      '**/.wrangler/**',
+      'design/**',
+      '**/node_modules/**',
+      'e2e/test-results/**',
+      'e2e/report/**',
+      '**/*.tmp.*',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
