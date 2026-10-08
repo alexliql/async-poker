@@ -1,0 +1,23 @@
+{
+  "name": "@holdem/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "fonts": "node scripts/fonts.mjs"
+  },
+  "dependencies": {
+    "@holdem/engine": "workspace:*",
+    "@resvg/resvg-wasm": "2.6.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20251001.0",
+    "@fontsource/bricolage-grotesque": "5.1.0",
+    "@fontsource/geist-mono": "5.1.0",
+    "wrangler": "4.140.0"
+  }
+}

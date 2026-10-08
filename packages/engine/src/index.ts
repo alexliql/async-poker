@@ -4,3 +4,4 @@ export * from './types';
 export * from './engine';
 export * from './view';
 export * from './palette';
+export * from './protocol';
