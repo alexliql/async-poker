@@ -13,16 +13,23 @@ Needs Node 20+ and pnpm 10.
 
 ```sh
 pnpm install
-pnpm dev            # builds the web app and serves it from the Worker at http://localhost:8787
+pnpm dev
 ```
+
+`pnpm dev` builds the web app and serves it from the Worker at http://localhost:8787.
 
 Open http://localhost:8787, host a table, and open the invite link in a second browser profile (or a private window) to join. To try the table without anyone else, open http://localhost:8787/demo: it runs the real rules engine in the page against five bots.
 
-For UI work with hot reload, run the Worker in one terminal and Vite in another:
+For UI work with hot reload, run the Worker (the API, on port 8787) in one terminal:
 
 ```sh
-pnpm --filter @holdem/server dev    # API on :8787
-pnpm --filter @holdem/web dev       # app on :5173, proxies /api and /og to :8787
+pnpm --filter @holdem/server dev
+```
+
+and Vite (the app, on port 5173, proxying `/api` and `/og` to 8787) in another:
+
+```sh
+pnpm --filter @holdem/web dev
 ```
 
 ## Scripts
@@ -88,11 +95,15 @@ These were open in the build plan; the recommended option was taken in each case
 
 ## Design checks
 
-```sh
-# every table surface is generated from Main.dc.html; only the layout id, title and preview size differ
-bash design/tools/sync.sh
+Every table surface is generated from `Main.dc.html`; only the layout id, title and preview size differ. To regenerate and check them all:
 
-# a single non-table screen
+```sh
+bash design/tools/sync.sh
+```
+
+To check a single non-table screen:
+
+```sh
 node design/tools/check.js design/screens/Join.dc.html
 ```
 
